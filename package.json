@@ -34,7 +34,7 @@
     "typedoc-plugin-rename-defaults": "^0.7.3",
     "typedoc-plugin-zod": "^1.4.1"
   },
-  "packageManager": "pnpm@9.15.5",
+  "packageManager": "pnpm@10.12.1",
   "engines": {
     "node": ">=18"
   },

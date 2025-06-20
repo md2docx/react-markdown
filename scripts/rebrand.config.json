@@ -1,6 +1,6 @@
 {
-  "owner": "react18-tools",
-  "repo": "turborepo-template",
-  "packageName": "react18-loaders",
-  "title": "React 18 Loaders"
+  "packageName": "@m2d/react-markdown",
+  "owner": "md2docx",
+  "repo": "react-markdown",
+  "title": "React Markdown"
 }
