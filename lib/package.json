@@ -44,9 +44,6 @@
     "vite-tsconfig-paths": "^5.1.4",
     "vitest": "^3.1.4"
   },
-  "dependencies": {
-    "r18gs": "^3.0.1"
-  },
   "peerDependencies": {
     "@types/react": ">=16.8",
     "next": ">=10",
@@ -85,5 +82,10 @@
     "Progressive",
     "Modern",
     "Seamless integration"
-  ]
+  ],
+  "dependencies": {
+    "remark-parse": "^11.0.0",
+    "remark-rehype": "^11.1.2",
+    "unified": "^11.0.5"
+  }
 }
