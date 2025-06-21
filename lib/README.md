@@ -1,26 +1,25 @@
-# React Markdown <img src="https://raw.githubusercontent.com/mayank1513/mayank1513/main/popper.png" style="height: 40px"/>
+# MDX Renderer [@m2d/react-markdown] <img src="https://raw.githubusercontent.com/mayank1513/mayank1513/main/popper.png" style="height: 40px"/>
 
 [![test](https://github.com/md2docx/react-markdown/actions/workflows/test.yml/badge.svg)](https://github.com/md2docx/react-markdown/actions/workflows/test.yml) [![Maintainability](https://api.codeclimate.com/v1/badges/aa896ec14c570f3bb274/maintainability)](https://codeclimate.com/github/md2docx/react-markdown/maintainability) [![codecov](https://codecov.io/gh/md2docx/react-markdown/graph/badge.svg)](https://codecov.io/gh/md2docx/react-markdown) [![Version](https://img.shields.io/npm/v/@m2d/react-markdown.svg?colorB=green)](https://www.npmjs.com/package/@m2d/react-markdown) [![Downloads](https://img.jsdelivr.com/img.shields.io/npm/d18m/@m2d/react-markdown.svg)](https://www.npmjs.com/package/@m2d/react-markdown) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/@m2d/react-markdown) [![Gitpod ready-to-code](https://img.shields.io/badge/Gitpod-ready--to--code-blue?logo=gitpod)](https://gitpod.io/from-referrer/)
 
-React Markdown is a comprehensive library designed to unlock the full potential of React 18 server components. It provides customizable loading animation components and a fullscreen loader container, seamlessly integrating with React and Next.js.
+> ✨ A modern, JSX-compatible, SSR-ready Markdown renderer for React — with full access to MDAST & HAST trees for tools like `mdast2docx`.
 
-✅ Fully Treeshakable (import from `@m2d/react-markdown/client/loader-container`)
+---
 
-✅ Fully TypeScript Supported
+## 🔥 Why mdx-render?
 
-✅ Leverages the power of React 18 Server components
+`mdx-render` goes beyond traditional React Markdown libraries by focusing on:
 
-✅ Compatible with all React 18 build systems/tools/frameworks
+- ✅ **Server-side rendering (SSR)** without hooks
+- ✅ **Full JSX children support** (not just strings)
+- ✅ **Access to raw MDAST & HAST trees**
+- ✅ **Drop-in plugin support** via Unified (`remark`, `rehype`, etc.)
+- ✅ **Custom component overrides** per tag
+- ✅ **Integration with tools like [`mdast2docx`](https://github.com/md2docx/mdast2docx)**
 
-✅ Documented with [Typedoc](https://md2docx.github.io/react-markdown) ([Docs](https://md2docx.github.io/react-markdown))
+---
 
-✅ Examples for Next.js, and Vite
-
-> <img src="https://raw.githubusercontent.com/mayank1513/mayank1513/main/popper.png" style="height: 20px"/> Star [this repository](https://github.com/md2docx/react-markdown) and share it with your friends.
-
-## Getting Started
-
-### Installation
+## 🚀 Installation
 
 ```bash
 pnpm add @m2d/react-markdown
@@ -38,95 +37,123 @@ npm install @m2d/react-markdown
 yarn add @m2d/react-markdown
 ```
 
-## Want Lite Version? [![npm bundle size](https://img.shields.io/bundlephobia/minzip/@m2d/react-markdown-lite)](https://www.npmjs.com/package/@m2d/react-markdown-lite) [![Version](https://img.shields.io/npm/v/@m2d/react-markdown-lite.svg?colorB=green)](https://www.npmjs.com/package/@m2d/react-markdown-lite) [![Downloads](https://img.jsdelivr.com/img.shields.io/npm/d18m/@m2d/react-markdown-lite.svg)](https://www.npmjs.com/package/@m2d/react-markdown-lite)
+---
 
-```bash
-pnpm add @m2d/react-markdown-lite
-```
-
-**or**
-
-```bash
-npm install @m2d/react-markdown-lite
-```
-
-**or**
-
-```bash
-yarn add @m2d/react-markdown-lite
-```
-
-> You need `r18gs` as a peer-dependency
-
-### Import Styles
-
-You can import styles globally or within specific components.
-
-```css
-/* globals.css */
-@import "@m2d/react-markdown/dist";
-```
+## ⚡ Quick Example
 
 ```tsx
-// layout.tsx
-import "@m2d/react-markdown/dist/index.css";
-```
+import { Md } from "mdx-render";
+import { toDocx } from "mdast2docx";
+import { useRef } from "react";
 
-For selective imports:
+const astRef = useRef([]);
 
-```css
-/* globals.css */
-@import "@m2d/react-markdown/dist/client"; /** required if you are using LoaderContainer */
-@import "@m2d/react-markdown/dist/server/bars/bars1";
-```
-
-### Usage
-
-Using loaders is straightforward.
-
-```tsx
-import { Bars1 } from "@m2d/react-markdown/dist/server/bars/bars1";
-
-export default function MyComponent() {
-  return someCondition ? <Bars1 /> : <>Something else...</>;
+export default function Page() {
+  return (
+    <>
+      <Md astRef={astRef}>{`# Hello\n\nThis is **Markdown**.`}</Md>
+      <button
+        onClick={() => {
+          const doc = toDocx(astRef.current[0].mdast);
+          // Export DOCX, or save
+        }}>
+        Export to DOCX
+      </button>
+    </>
+  );
 }
 ```
 
-For detailed API and options, refer to [the API documentation](https://md2docx.github.io/react-markdown).
+---
 
-**Using LoaderContainer**
+## 🧠 JSX-Aware Parsing
 
-`LoaderContainer` is a fullscreen component. You can add this component directly in your layout and then use `useLoader` hook to toggle its visibility.
-
-```tsx
-// layout.tsx
-<LoaderContainer />
-	 ...
-```
+Unlike other libraries, this renderer supports **JSX as children**, which means you can nest Markdown inside arbitrary components:
 
 ```tsx
-// some other page or component
-import { useLoader } from "@m2d/react-markdown/dist/hooks";
-
-export default MyComponent() {
-	const { setLoading } = useLoader();
-	useCallback(()=>{
-		setLoading(true);
-		...do some work
-		setLoading(false);
-	}, [])
-	...
-}
+<Md>
+  <section>{`# Title\n\nContent.`}</section>
+</Md>
 ```
+
+> Note: `astRef.current` is an array — one entry per Markdown segment.
+> Each entry contains `{ mdast, hast }` for fine-grained control.
+
+---
+
+## ✨ Component Overrides
+
+Override default HTML rendering with your own components:
+
+```tsx
+<Md
+  components={{
+		code: (props) => <CodeWithHighlights {...props} />
+    em: Unwrap, // Renders <em> content without tags
+    blockquote: Omit, // Removes <blockquote> completely
+  }}>
+  {`*This will be unwrapped*\n\n> This will be removed!`}
+</Md>
+```
+
+Use the built-in helpers:
+
+- `Unwrap` – renders children, ignores tag & props.
+- `Omit` – removes the element and its content entirely.
+
+---
+
+## 🧩 Plugin Support
+
+Use any `remark` or `rehype` plugins with full flexibility:
+
+```tsx
+<Md remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeSlug, rehypeAutolinkHeadings]}>
+  {markdown}
+</Md>
+```
+
+---
+
+## 📦 astRef: MDAST + HAST Access
+
+```ts
+type astRef = {
+  current: { mdast: Root; hast: HastRoot }[];
+};
+```
+
+Each markdown block is processed independently to allow full JSX flexibility.
+You can access all parsed trees via `astRef.current`, ideal for:
+
+- DOCX/PDF generation (`mdast2docx`)
+- Markdown linting or analytics
+- AST-aware transformations
+
+---
+
+## 🧭 Roadmap
+
+- [ ] 🔄 Merge surrounding JSX + `<Md>` blocks into unified MDAST/HAST
+- [ ] 🧪 Add test utilities for structural validation
+- [x] 📚 Provide Next.js examples with DOCX export
+
+---
+
+## 📘 Related Projects
+
+- [mdast2docx](https://github.com/md2docx/mdast2docx) – Convert MDAST to Word (.docx)
+- [unifiedjs](https://unifiedjs.com/) – Syntax tree processing toolkit
+- [react-markdown](https://github.com/remarkjs/react-markdown) – A simpler but less flexible Markdown renderer
+
+---
 
 ## License
 
 This library is licensed under the MPL-2.0 open-source license.
 
-
-
 > <img src="https://raw.githubusercontent.com/mayank1513/mayank1513/main/popper.png" style="height: 20px"/> Please enroll in [our courses](https://mayank-chaudhari.vercel.app/courses) or [sponsor](https://github.com/sponsors/mayank1513) our work.
 
-<hr />
+---
 
 <p align="center" style="text-align:center">with 💖 by <a href="https://mayank-chaudhari.vercel.app" target="_blank">Mayank Kumar Chaudhari</a></p>
