@@ -3,9 +3,8 @@ import remarkParse from "remark-parse";
 import remarkRehype, { type Options } from "remark-rehype";
 import { PluggableList, unified } from "unified";
 import { Root } from "mdast";
-import { Element, Properties } from "hast";
-
-const uuid = () => crypto.randomUUID();
+import { Element } from "hast";
+import { handleAriaAndDataProps, uuid } from "./utils";
 
 const emptyHtmlTags = ["br", "hr", "img", "input"];
 
@@ -22,18 +21,6 @@ export interface MdProps extends HTMLProps<HTMLDivElement> {
   components?: Partial<Record<keyof JSX.IntrinsicElements, FC<ComponentProps>>>;
   skipHtml?: boolean;
 }
-
-const handleAriaAndDataProps = (properties: Properties) =>
-  Object.fromEntries(
-    Object.entries(properties).map(([key, value]) => [
-      key.startsWith("data")
-        ? key.replace(/[A-Z]+(?![a-z])|[A-Z]/g, match => "-" + match.toLowerCase())
-        : key.startsWith("aria")
-          ? key.replace("aria", "aria-").toLowerCase()
-          : key,
-      value,
-    ]),
-  );
 
 const El = ({
   node,
@@ -118,6 +105,7 @@ const MarkdownRecursive = ({ children, props }: MarkdownRecursiveProps) => {
       </Tag>
     );
   }
+  /* v8 ignore next 2 should never reach here, but in case */
   return children;
 };
 

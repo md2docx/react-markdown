@@ -1,6 +1,7 @@
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, test, vi } from "vitest";
 import { Md } from "./md";
+import md from "../../../../sample.md?raw";
 
 describe.concurrent("Md", () => {
   afterEach(cleanup);
@@ -8,7 +9,11 @@ describe.concurrent("Md", () => {
   test("renders without errors and applies className", ({ expect }) => {
     const clx = "my-class";
     const testId = "md-root";
-    render(<Md data-testid={testId} className={clx} />);
+    render(
+      <Md data-testid={testId} className={clx}>
+        {md}
+      </Md>,
+    );
     expect(screen.getByTestId(testId).classList).toContain(clx);
   });
 
@@ -87,5 +92,19 @@ describe.concurrent("Md", () => {
     );
     const md = screen.getByTestId(testId);
     expect(md.textContent).toContain("plugin!");
+  });
+
+  test("Handle children tree containing custom components", ({ expect }) => {
+    const testId = "md-root-" + crypto.randomUUID();
+    const CustomComponent = ({ children }: any) => <div>{children}</div>;
+    render(
+      <Md data-testid={testId}>
+        <CustomComponent>
+          <code>test</code>
+        </CustomComponent>
+      </Md>,
+    );
+    const md = screen.getByTestId(testId);
+    expect(md.querySelector("code")?.textContent).toBe("test");
   });
 });
