@@ -135,7 +135,7 @@ export const Md = ({
   const Wrapper = wrapper ?? (Object.keys(props).length ? "div" : Fragment);
   return (
     // @ts-expect-error -- complex props
-    <Wrapper {...props} data-testid="md">
+    <Wrapper {...props}>
       <MarkdownRecursive
         key={uuid()}
         props={{
