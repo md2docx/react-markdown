@@ -56,12 +56,12 @@ describe.concurrent("Md", () => {
     const testId = "md-root-" + crypto.randomUUID();
     const ref = { current: null as any };
     render(
-      <Md data-testid={testId} mdastRef={ref}>
+      <Md data-testid={testId} astRef={ref}>
         # Title
       </Md>,
     );
     expect(ref.current).toBeTruthy();
-    expect(ref.current.type).toBe("root");
+    expect(ref.current[0].mdast.type).toBe("root");
   });
 
   test("renders nested React elements with MarkdownRecursive", ({ expect }) => {

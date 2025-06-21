@@ -3,7 +3,7 @@ import remarkParse from "remark-parse";
 import remarkRehype, { type Options } from "remark-rehype";
 import { PluggableList, unified } from "unified";
 import { Root } from "mdast";
-import { Element } from "hast";
+import { Element, Root as HastRoot } from "hast";
 import { handleAriaAndDataProps, uuid } from "./utils";
 
 /**
@@ -44,9 +44,9 @@ export interface MdProps extends HTMLProps<HTMLDivElement> {
   remarkRehypeOptions?: Options;
 
   /**
-   * Optional reference to access the parsed MDAST tree.
+   * Optional reference to access the parsed MDAST and HAST trees.
    */
-  mdastRef?: { current: Root };
+  astRef?: { current: { mdast: Root; hast: HastRoot }[] };
 
   /**
    * Custom React components to override specific HTML tags.
@@ -110,7 +110,7 @@ const Markdown = ({
   remarkPlugins = [],
   rehypePlugins = [],
   remarkRehypeOptions,
-  mdastRef,
+  astRef,
   components,
   skipHtml,
 }: MarkdownProps) => {
@@ -124,8 +124,11 @@ const Markdown = ({
     .use(rehypePlugins);
 
   const mdast = processor.parse(children);
-  if (mdastRef) mdastRef.current = mdast;
   const hast = processor.runSync(mdast);
+  if (astRef) {
+    if (!astRef.current) astRef.current = [];
+    astRef.current.push({ mdast, hast });
+  }
 
   return (
     <El
@@ -171,8 +174,8 @@ const MarkdownRecursive = ({ children, props }: MarkdownRecursiveProps) => {
       </Tag>
     );
   }
-  /* v8 ignore next 2 should never reach here, but in case */
   // Non-string, non-element nodes are returned as-is
+  /* v8 ignore next 2 should never reach here, but in case */
   return children;
 };
 
@@ -190,7 +193,7 @@ export const Md = ({
   remarkPlugins,
   rehypePlugins,
   remarkRehypeOptions,
-  mdastRef,
+  astRef,
   components,
   skipHtml,
   ...props
@@ -206,7 +209,7 @@ export const Md = ({
           remarkPlugins,
           rehypePlugins,
           remarkRehypeOptions,
-          mdastRef,
+          astRef,
           components,
           skipHtml,
         }}>
