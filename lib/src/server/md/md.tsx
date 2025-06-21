@@ -24,6 +24,18 @@ export interface MdProps extends HTMLProps<HTMLDivElement> {
   skipHtml?: boolean;
 }
 
+const handleAriaAndDataProps = (properties: Properties) =>
+  Object.fromEntries(
+    Object.entries(properties).map(([key, value]) => [
+      key.startsWith("data")
+        ? key.replace(/[A-Z]+(?![a-z])|[A-Z]/g, match => "-" + match.toLowerCase())
+        : key.startsWith("aria")
+          ? key.replace("aria", "aria-").toLowerCase()
+          : key,
+      value,
+    ]),
+  );
+
 const El = ({
   node,
   components,
@@ -33,8 +45,8 @@ const El = ({
   const Component = components?.[tagName as keyof HTMLElementTagNameMap] ?? tagName ?? Fragment;
   const props = tagName
     ? typeof Component === "string"
-      ? properties
-      : { ...properties, node }
+      ? handleAriaAndDataProps(properties)
+      : { ...handleAriaAndDataProps(properties), node }
     : {};
   // @ts-expect-error -- props
   if (emptyHtmlTags.includes(Component)) return <Component {...props} />;
