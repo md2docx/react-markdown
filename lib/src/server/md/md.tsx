@@ -1,4 +1,4 @@
-import { FC, Fragment, HTMLProps, isValidElement, ReactNode } from "react";
+import { FC, Fragment, HTMLProps, isValidElement, JSX, ReactNode } from "react";
 import remarkParse from "remark-parse";
 import remarkRehype, { type Options } from "remark-rehype";
 import { PluggableList, unified } from "unified";
@@ -7,20 +7,19 @@ import { Element, Properties } from "hast";
 
 const uuid = () => crypto.randomUUID();
 
-const emptyHtmlTags: (string | FC<ComponentProps>)[] = ["br", "hr", "img", "input"];
+const emptyHtmlTags = ["br", "hr", "img", "input"];
 
-type ComponentProps = HTMLProps<HTMLElement> &
-  Properties & {
-    node: Element;
-  };
+type ComponentProps = JSX.IntrinsicElements[keyof JSX.IntrinsicElements] & {
+  node: Element;
+};
 
 export interface MdProps extends HTMLProps<HTMLDivElement> {
-  wrapper?: keyof HTMLElementTagNameMap;
+  wrapper?: keyof JSX.IntrinsicElements;
   remarkPlugins?: PluggableList;
   rehypePlugins?: PluggableList;
   remarkRehypeOptions?: Options;
   mdastRef?: { current: Root };
-  components?: Partial<Record<keyof HTMLElementTagNameMap, FC<ComponentProps>>>;
+  components?: Partial<Record<keyof JSX.IntrinsicElements, FC<ComponentProps>>>;
   skipHtml?: boolean;
 }
 
@@ -42,24 +41,29 @@ const El = ({
   skipHtml,
 }: { node: Element } & Pick<MdProps, "components" | "skipHtml">) => {
   const { tagName, properties, children } = node;
-  const Component = components?.[tagName as keyof HTMLElementTagNameMap] ?? tagName ?? Fragment;
-  const props = tagName
-    ? typeof Component === "string"
-      ? handleAriaAndDataProps(properties)
-      : { ...handleAriaAndDataProps(properties), node }
-    : {};
-  // @ts-expect-error -- props
-  if (emptyHtmlTags.includes(Component)) return <Component {...props} />;
-  return (
-    // @ts-expect-error -- props
-    <Component {...props}>
-      {children.map(node =>
-        node.type === "text" || (node.type === "raw" && !skipHtml)
-          ? node.value
-          : node.type === "element" && <El key={uuid()} {...{ node, components }} />,
-      )}
-    </Component>
+  const cleanedProps = handleAriaAndDataProps(
+    properties ?? {},
+  ) as JSX.IntrinsicElements[keyof JSX.IntrinsicElements];
+
+  const child = children.map(node =>
+    node.type === "text" || (node.type === "raw" && !skipHtml)
+      ? node.value.replace(/\n/g, "") || null
+      : node.type === "element" && <El key={uuid()} {...{ node, components }} />,
   );
+
+  if (!tagName) return child;
+
+  const Component = components?.[tagName as keyof JSX.IntrinsicElements] ?? tagName;
+
+  if (typeof Component === "string") {
+    return emptyHtmlTags.includes(Component) ? (
+      <Component {...cleanedProps} />
+    ) : (
+      <Component {...cleanedProps}>{child}</Component>
+    );
+  }
+
+  return <Component {...{ ...cleanedProps, node }}>{child}</Component>;
 };
 
 interface MarkdownProps extends MdProps {
@@ -83,6 +87,7 @@ const Markdown = ({
   const mdast = processor.parse(children);
   if (mdastRef) mdastRef.current = mdast;
   const hast = processor.runSync(mdast);
+  console.log({ hast });
   return (
     // @ts-expect-error -- unclean shortcut
     <El
@@ -106,10 +111,10 @@ const MarkdownRecursive = ({ children, props }: MarkdownRecursiveProps) => {
       props1 = jsx.props;
     }
     return (
-      // @ts-expect-error props is unknown
-      <Tag {...props1} key={uuid()}>
-        {/* @ts-expect-error props is unknown */}
-        <MarkdownRecursive props={props}>{props1.children}</MarkdownRecursive>
+      <Tag {...(props1 as JSX.IntrinsicElements[keyof JSX.IntrinsicElements])} key={uuid()}>
+        <MarkdownRecursive props={props}>
+          {(props1 as JSX.IntrinsicElements[keyof JSX.IntrinsicElements]).children}
+        </MarkdownRecursive>
       </Tag>
     );
   }
