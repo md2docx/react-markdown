@@ -24,7 +24,10 @@ export type UnwrapProps = ComponentProps & {
  */
 export const Unwrap = ({ children, noWarning, node: { tagName } }: UnwrapProps) => {
   if (!noWarning) {
-    console.warn(`${tagName} is unwrapped. Ignoring related props as well.`);
+    console.warn(
+      `The <${tagName}> element has been unwrapped. Only its children will be rendered; all attributes are ignored. ` +
+        `Use 'noWarning' to suppress this message.`,
+    );
   }
   return children;
 };
