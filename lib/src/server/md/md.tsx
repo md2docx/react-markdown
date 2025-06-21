@@ -6,22 +6,63 @@ import { Root } from "mdast";
 import { Element } from "hast";
 import { handleAriaAndDataProps, uuid } from "./utils";
 
+/**
+ * Tags that are self-closing and must not contain children.
+ */
 const emptyHtmlTags = ["br", "hr", "img", "input"];
 
+/**
+ * Extended component props to support custom HTML components
+ * and HAST Element reference.
+ */
 type ComponentProps = JSX.IntrinsicElements[keyof JSX.IntrinsicElements] & {
   node: Element;
 };
 
+/**
+ * Props accepted by the main `<Md />` component for rendering Markdown.
+ */
 export interface MdProps extends HTMLProps<HTMLDivElement> {
+  /**
+   * Optional wrapper element. Defaults to `<div>` if additional props are passed, otherwise uses `Fragment`.
+   */
   wrapper?: keyof JSX.IntrinsicElements;
+
+  /**
+   * Optional `remark` plugins used during markdown parsing.
+   */
   remarkPlugins?: PluggableList;
+
+  /**
+   * Optional `rehype` plugins used during markdown-to-HTML conversion.
+   */
   rehypePlugins?: PluggableList;
+
+  /**
+   * Options passed to `remark-rehype` for controlling transformation.
+   */
   remarkRehypeOptions?: Options;
+
+  /**
+   * Optional reference to access the parsed MDAST tree.
+   */
   mdastRef?: { current: Root };
+
+  /**
+   * Custom React components to override specific HTML tags.
+   */
   components?: Partial<Record<keyof JSX.IntrinsicElements, FC<ComponentProps>>>;
+
+  /**
+   * If true, skips raw HTML rendering in markdown content.
+   */
   skipHtml?: boolean;
 }
 
+/**
+ * Renders a single HAST Element recursively as a React element,
+ * supporting string HTML tags and optional component overrides.
+ */
 const El = ({
   node,
   components,
@@ -54,9 +95,16 @@ const El = ({
 };
 
 interface MarkdownProps extends MdProps {
+  /**
+   * Raw markdown string to be parsed and rendered.
+   */
   children: string;
 }
 
+/**
+ * Internal component that parses markdown string into MDAST and HAST,
+ * and renders it using the `El` recursive renderer.
+ */
 const Markdown = ({
   children,
   remarkPlugins = [],
@@ -69,16 +117,25 @@ const Markdown = ({
   const processor = unified()
     .use(remarkParse)
     .use(remarkPlugins)
-    .use(remarkRehype, { ...remarkRehypeOptions, allowDangerousHtml: !skipHtml })
+    .use(remarkRehype, {
+      ...remarkRehypeOptions,
+      allowDangerousHtml: !skipHtml,
+    })
     .use(rehypePlugins);
+
   const mdast = processor.parse(children);
   if (mdastRef) mdastRef.current = mdast;
   const hast = processor.runSync(mdast);
-  console.log({ hast });
+
   return (
-    // @ts-expect-error -- unclean shortcut
     <El
-      {...{ components, skipHtml, node: { children: Array.isArray(hast) ? hast : hast.children } }}
+      {...{
+        components,
+        skipHtml,
+        node: {
+          children: Array.isArray(hast) ? hast : hast.children,
+        } as Element,
+      }}
     />
   );
 };
@@ -87,28 +144,46 @@ interface MarkdownRecursiveProps {
   children: ReactNode;
   props: Omit<MdProps, "wrapper">;
 }
+
+/**
+ * Recursively traverses React children and injects markdown rendering
+ * into string-based content, preserving JSX wrapper structure.
+ */
 const MarkdownRecursive = ({ children, props }: MarkdownRecursiveProps) => {
   if (typeof children === "string") return <Markdown {...props}>{children}</Markdown>;
+
   if (isValidElement(children)) {
-    let { type: Tag, props: props1 } = children;
-    if (Tag instanceof Function) {
-      // @ts-expect-error Tag has no call signature
-      const jsx = Tag(props1);
+    let { type: Tag, props: innerProps } = children;
+
+    if (typeof Tag === "function") {
+      // Evaluate factory-style functional components to unwrap structure
+      // @ts-expect-error call signature not always inferable
+      const jsx = Tag(innerProps);
       Tag = jsx.type;
-      props1 = jsx.props;
+      innerProps = jsx.props;
     }
+
     return (
-      <Tag {...(props1 as JSX.IntrinsicElements[keyof JSX.IntrinsicElements])} key={uuid()}>
+      <Tag {...(innerProps as JSX.IntrinsicElements[keyof JSX.IntrinsicElements])} key={uuid()}>
         <MarkdownRecursive props={props}>
-          {(props1 as JSX.IntrinsicElements[keyof JSX.IntrinsicElements]).children}
+          {(innerProps as JSX.IntrinsicElements[keyof JSX.IntrinsicElements]).children}
         </MarkdownRecursive>
       </Tag>
     );
   }
   /* v8 ignore next 2 should never reach here, but in case */
+  // Non-string, non-element nodes are returned as-is
   return children;
 };
 
+/**
+ * The Markdown renderer component.
+ * Provides a safe, SSR-compatible way to render markdown with support for:
+ * - Custom wrappers
+ * - Plugin pipelines (remark + rehype)
+ * - Component overrides
+ * - Optional raw HTML stripping
+ */
 export const Md = ({
   children,
   wrapper,
@@ -121,8 +196,9 @@ export const Md = ({
   ...props
 }: MdProps) => {
   const Wrapper = wrapper ?? (Object.keys(props).length ? "div" : Fragment);
+
   return (
-    // @ts-expect-error -- complex props
+    // @ts-expect-error - props are valid for HTML elements but cannot be statically inferred on Fragment
     <Wrapper {...props}>
       <MarkdownRecursive
         key={uuid()}

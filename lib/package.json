@@ -3,7 +3,7 @@
   "author": "Mayank Kumar Chaudhari (https://mayank-chaudhari.vercel.app)",
   "private": false,
   "version": "0.0.0",
-  "description": "",
+  "description": "A modern, SSR-friendly React Markdown renderer that preserves the MDAST tree for reuse (e.g., mdast2docx), supports full JSX children, unified plugins, and component overrides.",
   "license": "MPL-2.0",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -15,6 +15,13 @@
   "files": [
     "dist/**"
   ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
   "scripts": {
     "build": "tsup && tsc -p tsconfig-build.json && gzip -c dist/index.js | wc -c",
     "clean": "rm -rf dist",
@@ -67,23 +74,36 @@
     }
   ],
   "keywords": [
-    "React",
-    "React Loaders",
-    "React 18",
-    "React 19",
-    "Next.js",
-    "Next.js 14",
-    "Next.js 15",
-    "React server components",
-    "Customizable",
-    "Cutting-edge",
-    "Compatibility",
-    "Frontend development",
-    "UI components",
-    "Web development",
-    "Progressive",
-    "Modern",
-    "Seamless integration"
+    "react",
+    "react-markdown",
+    "markdown",
+    "jsx",
+    "ssr",
+    "mdast",
+    "mdast2docx",
+    "hast",
+    "remark",
+    "rehype",
+    "unified",
+    "docx",
+    "custom-components",
+    "lightweight",
+    "renderer",
+    "react 18",
+    "react 19",
+    "next.js",
+    "next.js 14",
+    "next.js 15",
+    "react server components",
+    "frontend development",
+    "web development",
+    "ui components",
+    "customizable",
+    "modern",
+    "progressive",
+    "cutting-edge",
+    "compatibility",
+    "seamless integration"
   ],
   "dependencies": {
     "remark-parse": "^11.0.0",
