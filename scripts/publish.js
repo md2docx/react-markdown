@@ -61,12 +61,15 @@ execSync(`cd lib && pnpm build && npm publish ${provenance} --access public`);
 /** Create GitHub release */
 try {
   execSync(
-    `gh release create ${VERSION} --generate-notes --latest -n "$(sed '1,/^## /d;/^## /,$d' CHANGELOG.md)" --title "Release v${VERSION}"`,
+    `gh release create ${VERSION} --generate-notes --latest -n "$(sed '1,/^## /d;/^## /,$d' lib/CHANGELOG.md)" --title "Release v${VERSION}"`,
   );
 } catch {
   execSync(`gh release create ${VERSION} --generate-notes --latest --title "Release v${VERSION}"`);
 }
 
-execSync("node ./scripts/lite.js");
-execSync(`cd lib && pnpm build && npm publish ${provenance} --access public`);
-
+try {
+  // Publish canonical packages
+  execSync("node scripts/publish-canonical.js");
+} catch {
+  console.error("Failed to publish canonical packages");
+}

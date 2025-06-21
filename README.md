@@ -135,7 +135,7 @@ You can access all parsed trees via `astRef.current`, ideal for:
 ## 🧭 Roadmap
 
 - [ ] 🔄 Merge surrounding JSX + `<Md>` blocks into unified MDAST/HAST
-- [ ] 🧪 Add test utilities for structural validation
+- [x] 🧪 Add test utilities for structural validation
 - [x] 📚 Provide Next.js examples with DOCX export
 
 ---

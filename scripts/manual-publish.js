@@ -114,6 +114,9 @@ execSync(
   `gh release create ${NEW_VERSION} --generate-notes${isLatestRelease ? " --latest" : ""} -n "$(sed '1,/^## /d;/^## /,$d' CHANGELOG.md)" --title "Release v${NEW_VERSION}"`,
 );
 
-execSync("node ./scripts/lite.js");
-execSync(publishCmd + reTag.replace("@", "-lite@"));
-
+try {
+  // Publish canonical packages
+  execSync("node scripts/publish-canonical.js");
+} catch {
+  console.error("Failed to publish canonical packages");
+}
