@@ -50,6 +50,16 @@
       "types": "./dist/server/omit/index.d.ts",
       "import": "./dist/server/omit/index.mjs",
       "require": "./dist/server/omit/index.js"
+    },
+    "./test-utils": {
+      "types": "./dist/test-utils.d.ts",
+      "import": "./dist/test-utils.mjs",
+      "require": "./dist/test-utils.js"
+    },
+    "./dist/test-utils": {
+      "types": "./dist/test-utils.d.ts",
+      "import": "./dist/test-utils.mjs",
+      "require": "./dist/test-utils.js"
     }
   },
   "scripts": {
