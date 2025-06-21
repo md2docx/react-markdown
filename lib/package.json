@@ -106,6 +106,7 @@
   "keywords": [
     "react",
     "react-markdown",
+    "mdx-renderer",
     "markdown",
     "jsx",
     "ssr",

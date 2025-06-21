@@ -19,6 +19,10 @@ export type ComponentProps = JSX.IntrinsicElements[keyof JSX.IntrinsicElements] 
   node: Element;
 };
 
+export type AstArrayElement = { mdast: Root; hast: HastRoot };
+
+export type AstRef = { current?: AstArrayElement[] };
+
 /**
  * Props accepted by the main `<Md />` component for rendering Markdown.
  */
@@ -46,7 +50,7 @@ export interface MdProps extends HTMLProps<HTMLDivElement> {
   /**
    * Optional reference to access the parsed MDAST and HAST trees.
    */
-  astRef?: { current: { mdast: Root; hast: HastRoot }[] };
+  astRef?: AstRef;
 
   /**
    * Custom React components to override specific HTML tags.

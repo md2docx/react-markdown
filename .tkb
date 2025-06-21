@@ -6,56 +6,6 @@
       "description": "Star [this repository](https://github.com/react18-tools/turborepo-template/) for easy access and to show your support",
       "columnId": "column-todo"
     },
-    "gbzyhx0FwFfzRoE-iqVeu": {
-      "id": "gbzyhx0FwFfzRoE-iqVeu",
-      "description": "run `yarn rebrand` to rebrand and clean up the repo; the `rebrand` script will automatically rebrand the repo, adjust workflows, and create a commit",
-      "columnId": "column-todo"
-    },
-    "Y5__aEZl3Pbxp7r90HKpV": {
-      "id": "Y5__aEZl3Pbxp7r90HKpV",
-      "description": "Install `pnpm` using `npm i -g pnpm`",
-      "columnId": "column-todo"
-    },
-    "jcpymbi71e702p7n6fwvZ": {
-      "id": "jcpymbi71e702p7n6fwvZ",
-      "description": "Install dependencies using `pnpm`: run `pnpm i`.",
-      "columnId": "column-todo"
-    },
-    "jdZxwLymOo7w2eZeNpvsN": {
-      "id": "jdZxwLymOo7w2eZeNpvsN",
-      "description": "Run `yarn plop`, and follow prompts to generate server or client components for your library",
-      "columnId": "column-todo"
-    },
-    "RX4J5v4y5IOe_ucf8pMRT": {
-      "id": "RX4J5v4y5IOe_ucf8pMRT",
-      "description": "🌟 Enable [private vulnerability reporting](https://github.com/md2docx/react-markdown/security) (For public repo - do this after updating visibility to public)",
-      "columnId": "column-todo"
-    },
-    "EdPbrbJLllUHfZmCS80f7": {
-      "id": "EdPbrbJLllUHfZmCS80f7",
-      "description": "Set up `CodeCov`\n  - Visit Codecov and set up your repo\n  - Create [repository secret]((https://github.com/md2docx/react-markdown/settings/secrets/actions)) for `CODECOV_TOKEN`",
-      "columnId": "column-todo"
-    },
-    "MLLUsAhCKaKxvEXFY0HSq": {
-      "id": "MLLUsAhCKaKxvEXFY0HSq",
-      "description": "Set up `CodeClimate`\n  - Visit CodeClimate and set up your repo\n  - Create [repository secret] for `CC_TEST_REPORTER_ID`\n  - Add `*.test.*` to ignore patterns on the website\n  - Update Code Climate badge",
-      "columnId": "column-todo"
-    },
-    "gMYfaAh2RABMP8uZRQgNx": {
-      "id": "gMYfaAh2RABMP8uZRQgNx",
-      "description": "Add `NPM_AUTH_TOKEN` to repository secrets to automate package publishing\n  - Log in to your [`npm` account](https://www.npmjs.com/login) and create an automation token\n  - Create a new repository secret `NPM_AUTH_TOKEN`",
-      "columnId": "column-todo"
-    },
-    "_BfuX7quWBANpDK1bI7YM": {
-      "id": "_BfuX7quWBANpDK1bI7YM",
-      "description": "Update description in `lib/package.json`",
-      "columnId": "column-todo"
-    },
-    "dC7QDBLH8BmHUfaYmIt81": {
-      "id": "dC7QDBLH8BmHUfaYmIt81",
-      "description": "(Optional) Add Repo Stats by visiting and setting up [repobeats](https://repobeats.axiom.co/)",
-      "columnId": "column-todo"
-    },
     "P_NrSJQ8m91Odgz8E1fS6": {
       "id": "P_NrSJQ8m91Odgz8E1fS6",
       "description": "Create your library and update examples",
@@ -118,16 +68,6 @@
       "title": "To do",
       "tasksIds": [
         "G-1H47JpSI69kav1qZ-kp",
-        "Y5__aEZl3Pbxp7r90HKpV",
-        "jcpymbi71e702p7n6fwvZ",
-        "gbzyhx0FwFfzRoE-iqVeu",
-        "jdZxwLymOo7w2eZeNpvsN",
-        "RX4J5v4y5IOe_ucf8pMRT",
-        "EdPbrbJLllUHfZmCS80f7",
-        "MLLUsAhCKaKxvEXFY0HSq",
-        "gMYfaAh2RABMP8uZRQgNx",
-        "_BfuX7quWBANpDK1bI7YM",
-        "dC7QDBLH8BmHUfaYmIt81",
         "P_NrSJQ8m91Odgz8E1fS6",
         "1dRWJhy45E1Rq5wZAmPHt",
         "5vS1JNXoMhDl5IBljwh2v",
