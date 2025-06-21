@@ -20,6 +20,16 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.mjs",
       "require": "./dist/index.js"
+    },
+    "./unwrap": {
+      "types": "./dist/unwrap/index.d.ts",
+      "import": "./dist/unwrap/index.mjs",
+      "require": "./dist/unwrap/index.js"
+    },
+    "./dist/unwrap": {
+      "types": "./dist/unwrap/index.d.ts",
+      "import": "./dist/unwrap/index.mjs",
+      "require": "./dist/unwrap/index.js"
     }
   },
   "scripts": {

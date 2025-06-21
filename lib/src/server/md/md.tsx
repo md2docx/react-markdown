@@ -15,7 +15,7 @@ const emptyHtmlTags = ["br", "hr", "img", "input"];
  * Extended component props to support custom HTML components
  * and HAST Element reference.
  */
-type ComponentProps = JSX.IntrinsicElements[keyof JSX.IntrinsicElements] & {
+export type ComponentProps = JSX.IntrinsicElements[keyof JSX.IntrinsicElements] & {
   node: Element;
 };
 
