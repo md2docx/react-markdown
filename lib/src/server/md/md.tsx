@@ -21,19 +21,28 @@ export interface MdProps extends HTMLProps<HTMLDivElement> {
   remarkRehypeOptions?: Options;
   mdastRef?: { current: Root };
   components?: Partial<Record<keyof HTMLElementTagNameMap, FC<ComponentProps>>>;
+  skipHtml?: boolean;
 }
 
-const El = ({ node, components }: { node: Element } & Pick<MdProps, "components">) => {
+const El = ({
+  node,
+  components,
+  skipHtml,
+}: { node: Element } & Pick<MdProps, "components" | "skipHtml">) => {
   const { tagName, properties, children } = node;
-  const Component = components?.[tagName as keyof HTMLElementTagNameMap] ?? tagName;
-  const props = typeof Component === "string" ? properties : { ...properties, node };
+  const Component = components?.[tagName as keyof HTMLElementTagNameMap] ?? tagName ?? Fragment;
+  const props = tagName
+    ? typeof Component === "string"
+      ? properties
+      : { ...properties, node }
+    : {};
   // @ts-expect-error -- props
   if (emptyHtmlTags.includes(Component)) return <Component {...props} />;
   return (
     // @ts-expect-error -- props
     <Component {...props}>
       {children.map(node =>
-        node.type === "text"
+        node.type === "text" || (node.type === "raw" && !skipHtml)
           ? node.value
           : node.type === "element" && <El key={uuid()} {...{ node, components }} />,
       )}
@@ -52,17 +61,21 @@ const Markdown = ({
   remarkRehypeOptions,
   mdastRef,
   components,
+  skipHtml,
 }: MarkdownProps) => {
   const processor = unified()
     .use(remarkParse)
     .use(remarkPlugins)
-    .use(remarkRehype, remarkRehypeOptions)
+    .use(remarkRehype, { ...remarkRehypeOptions, allowDangerousHtml: !skipHtml })
     .use(rehypePlugins);
   const mdast = processor.parse(children);
   if (mdastRef) mdastRef.current = mdast;
   const hast = processor.runSync(mdast);
-  return (Array.isArray(hast) ? hast : hast.children).map(node =>
-    node.type === "text" ? node.value : <El key={uuid()} {...{ node, components }} />,
+  return (
+    // @ts-expect-error -- unclean shortcut
+    <El
+      {...{ components, skipHtml, node: { children: Array.isArray(hast) ? hast : hast.children } }}
+    />
   );
 };
 
@@ -96,9 +109,10 @@ export const Md = ({
   wrapper,
   remarkPlugins,
   rehypePlugins,
-  remarkRehypeOptions: rehypeOptions,
+  remarkRehypeOptions,
   mdastRef,
   components,
+  skipHtml,
   ...props
 }: MdProps) => {
   const Wrapper = wrapper ?? (Object.keys(props).length ? "div" : Fragment);
@@ -110,9 +124,10 @@ export const Md = ({
         props={{
           remarkPlugins,
           rehypePlugins,
-          remarkRehypeOptions: rehypeOptions,
+          remarkRehypeOptions,
           mdastRef,
           components,
+          skipHtml,
         }}>
         {children}
       </MarkdownRecursive>
