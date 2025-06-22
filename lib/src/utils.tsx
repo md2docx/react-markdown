@@ -19,6 +19,8 @@ export const handleAriaAndDataProps = (properties: Properties) =>
 
 export const uuid = () => crypto.randomUUID();
 
+export type IntrinsicProps = JSX.IntrinsicElements[keyof JSX.IntrinsicElements];
+
 /**
  * Tags that are self-closing and must not contain children.
  */
@@ -28,7 +30,7 @@ const emptyHtmlTags = ["br", "hr", "img", "input"];
  * Extended component props to support custom HTML components
  * and HAST Element reference.
  */
-export type ComponentProps = JSX.IntrinsicElements[keyof JSX.IntrinsicElements] & {
+export type ComponentProps = IntrinsicProps & {
   node: Element;
 };
 
@@ -86,9 +88,7 @@ const El = ({
   skipHtml,
 }: { node: Element } & Pick<MdProps, "components" | "skipHtml">) => {
   const { tagName, properties, children } = node;
-  const cleanedProps = handleAriaAndDataProps(
-    properties ?? {},
-  ) as JSX.IntrinsicElements[keyof JSX.IntrinsicElements];
+  const cleanedProps = handleAriaAndDataProps(properties ?? {}) as IntrinsicProps;
 
   const child = children.map(node =>
     node.type === "text" || (node.type === "raw" && !skipHtml)
@@ -122,7 +122,7 @@ interface MarkdownProps extends MdProps {
  * Internal component that parses markdown string into MDAST and HAST,
  * and renders it using the `El` recursive renderer.
  */
-const Markdown = ({
+export const Markdown = ({
   children,
   remarkPlugins = [],
   rehypePlugins = [],
@@ -184,9 +184,9 @@ export const MarkdownRecursive = ({ children, props }: MarkdownRecursiveProps) =
     }
 
     return (
-      <Tag {...(innerProps as JSX.IntrinsicElements[keyof JSX.IntrinsicElements])} key={uuid()}>
+      <Tag {...(innerProps as IntrinsicProps)} key={uuid()}>
         <MarkdownRecursive props={props}>
-          {(innerProps as JSX.IntrinsicElements[keyof JSX.IntrinsicElements]).children}
+          {(innerProps as IntrinsicProps).children}
         </MarkdownRecursive>
       </Tag>
     );

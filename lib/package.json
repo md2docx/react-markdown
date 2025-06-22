@@ -85,16 +85,17 @@
     "esbuild-plugin-rdi": "^0.0.0",
     "esbuild-plugin-react18": "0.2.6",
     "esbuild-plugin-react18-css": "^0.0.4",
+    "fast-deep-equal": "^3.1.3",
     "jsdom": "^26.1.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "tsup": "^8.5.0",
-    "typescript": "^5.8.3",
-    "vite-tsconfig-paths": "^5.1.4",
-    "vitest": "^3.1.4",
     "remark-parse": "^11.0.0",
     "remark-rehype": "^11.1.2",
-    "unified": "^11.0.5"
+    "tsup": "^8.5.0",
+    "typescript": "^5.8.3",
+    "unified": "^11.0.5",
+    "vite-tsconfig-paths": "^5.1.4",
+    "vitest": "^3.1.4"
   },
   "peerDependencies": {
     "@types/react": ">=16.8",
