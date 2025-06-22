@@ -1,5 +1,9 @@
+import { Fragment } from "react/jsx-runtime";
 import { IntrinsicProps, Markdown, MdProps } from "../../utils";
-import { isValidElement, ReactNode, Fragment } from "react";
+import { isValidElement, memo, ReactNode } from "react";
+import equal from "fast-deep-equal";
+
+const OptimizedMarkdown = memo(Markdown, equal);
 
 interface MarkdownRecursiveProps {
   children: ReactNode;
@@ -10,15 +14,24 @@ interface MarkdownRecursiveProps {
  * Recursively traverses React children and injects markdown rendering
  * into string-based content, preserving JSX wrapper structure.
  */
-export const MarkdownRecursive = ({ children, markdownProps }: MarkdownRecursiveProps) => {
-  if (typeof children === "string") return <Markdown {...markdownProps}>{children}</Markdown>;
+const MarkdownRecursive = ({ children, markdownProps }: MarkdownRecursiveProps) => {
+  if (typeof children === "string")
+    return <OptimizedMarkdown {...markdownProps}>{children}</OptimizedMarkdown>;
 
   if (isValidElement(children)) {
-    const { type: Tag, props: innerProps } = children;
+    let { type: Tag, props: innerProps } = children;
+
+    if (typeof Tag === "function") {
+      // Evaluate factory-style functional components to unwrap structure
+      // @ts-expect-error call signature not always inferable
+      const jsx = Tag(innerProps);
+      Tag = jsx.type;
+      innerProps = jsx.props;
+    }
 
     return (
       <Tag {...(innerProps as IntrinsicProps)}>
-        <MarkdownRecursive markdownProps={markdownProps}>
+        <MarkdownRecursive {...{ markdownProps }}>
           {(innerProps as IntrinsicProps).children}
         </MarkdownRecursive>
       </Tag>
@@ -51,7 +64,7 @@ export const Md = ({
   const Wrapper = wrapper ?? (Object.keys(props).length ? "div" : Fragment);
 
   return (
-    // @ts-expect-error - props are valid for HTML elements but cannot be statically inferred on Fragment
+    // @ts-expect-error – dynamic wrapper ('div' | Fragment) is type-safe at runtime but not inferable statically
     <Wrapper {...props}>
       <MarkdownRecursive
         markdownProps={{
