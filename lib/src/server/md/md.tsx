@@ -4,7 +4,7 @@ import remarkRehype, { type Options } from "remark-rehype";
 import { PluggableList, unified } from "unified";
 import { Root } from "mdast";
 import { Element, Root as HastRoot } from "hast";
-import { handleAriaAndDataProps, uuid } from "./utils";
+import { handleAriaAndDataProps, uuid } from "../../utils";
 
 /**
  * Tags that are self-closing and must not contain children.
