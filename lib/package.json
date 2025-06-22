@@ -91,7 +91,10 @@
     "tsup": "^8.5.0",
     "typescript": "^5.8.3",
     "vite-tsconfig-paths": "^5.1.4",
-    "vitest": "^3.1.4"
+    "vitest": "^3.1.4",
+    "remark-parse": "^11.0.0",
+    "remark-rehype": "^11.1.2",
+    "unified": "^11.0.5"
   },
   "peerDependencies": {
     "@types/react": ">=16.8",
@@ -145,10 +148,5 @@
     "cutting-edge",
     "compatibility",
     "seamless integration"
-  ],
-  "dependencies": {
-    "remark-parse": "^11.0.0",
-    "remark-rehype": "^11.1.2",
-    "unified": "^11.0.5"
-  }
+  ]
 }
