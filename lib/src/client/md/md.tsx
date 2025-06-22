@@ -19,15 +19,7 @@ const MarkdownRecursive = ({ children, markdownProps }: MarkdownRecursiveProps) 
     return <OptimizedMarkdown {...markdownProps}>{children}</OptimizedMarkdown>;
 
   if (isValidElement(children)) {
-    let { type: Tag, props: innerProps } = children;
-
-    if (typeof Tag === "function") {
-      // Evaluate factory-style functional components to unwrap structure
-      // @ts-expect-error call signature not always inferable
-      const jsx = Tag(innerProps);
-      Tag = jsx.type;
-      innerProps = jsx.props;
-    }
+    const { type: Tag, props: innerProps } = children;
 
     return (
       <Tag {...(innerProps as IntrinsicProps)}>
