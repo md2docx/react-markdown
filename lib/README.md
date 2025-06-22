@@ -1,14 +1,19 @@
-# MDX Renderer [@m2d/react-markdown] <img src="https://raw.githubusercontent.com/mayank1513/mayank1513/main/popper.png" style="height: 40px"/>
+# MDX Renderer [`@m2d/react-markdown`] <img src="https://raw.githubusercontent.com/mayank1513/mayank1513/main/popper.png" style="height: 40px"/>
 
-[![test](https://github.com/md2docx/react-markdown/actions/workflows/test.yml/badge.svg)](https://github.com/md2docx/react-markdown/actions/workflows/test.yml) [![Maintainability](https://api.codeclimate.com/v1/badges/aa896ec14c570f3bb274/maintainability)](https://codeclimate.com/github/md2docx/react-markdown/maintainability) [![codecov](https://codecov.io/gh/md2docx/react-markdown/graph/badge.svg)](https://codecov.io/gh/md2docx/react-markdown) [![Version](https://img.shields.io/npm/v/@m2d/react-markdown.svg?colorB=green)](https://www.npmjs.com/package/@m2d/react-markdown) [![Downloads](https://img.jsdelivr.com/img.shields.io/npm/d18m/@m2d/react-markdown.svg)](https://www.npmjs.com/package/@m2d/react-markdown) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/@m2d/react-markdown) [![Gitpod ready-to-code](https://img.shields.io/badge/Gitpod-ready--to--code-blue?logo=gitpod)](https://gitpod.io/from-referrer/)
+[![test](https://github.com/md2docx/react-markdown/actions/workflows/test.yml/badge.svg)](https://github.com/md2docx/react-markdown/actions/workflows/test.yml)
+[![Maintainability](https://api.codeclimate.com/v1/badges/aa896ec14c570f3bb274/maintainability)](https://codeclimate.com/github/md2docx/react-markdown/maintainability)
+[![codecov](https://codecov.io/gh/md2docx/react-markdown/graph/badge.svg)](https://codecov.io/gh/md2docx/react-markdown)
+[![Version](https://img.shields.io/npm/v/@m2d/react-markdown.svg?colorB=green)](https://www.npmjs.com/package/@m2d/react-markdown)
+[![Downloads](https://img.jsdelivr.com/img.shields.io/npm/d18m/@m2d/react-markdown.svg)](https://www.npmjs.com/package/@m2d/react-markdown)
+![npm bundle size](https://img.shields.io/bundlephobia/minzip/@m2d/react-markdown)
 
-> ✨ A modern, JSX-compatible, SSR-ready Markdown renderer for React — with full access to MDAST & HAST trees for tools like `mdast2docx`.
+> ✨ A modern, SSR-compatible Markdown renderer for React with full MDAST/HAST access — built for **customization**, **performance**, and **document generation** - **docx/pdf**.
 
 ---
 
-## 🔥 Why mdx-render?
+## 🔥 Why `@m2d/react-markdown`?
 
-`mdx-render` goes beyond traditional React Markdown libraries by focusing on:
+`@m2d/react-markdown` goes beyond traditional React Markdown libraries by focusing on:
 
 - ✅ **Server-side rendering (SSR)** without hooks
 - ✅ **Full JSX children support** (not just strings)
@@ -17,9 +22,21 @@
 - ✅ **Custom component overrides** per tag
 - ✅ **Integration with tools like [`mdast2docx`](https://github.com/md2docx/mdast2docx)**
 
+Compared to `react-markdown`, this library offers:
+
+| Feature                             | `@m2d/react-markdown` ✅ | `react-markdown` ❌ |
+| ----------------------------------- | ------------------------ | ------------------- |
+| Full JSX support (not just strings) | ✅                       | ❌                  |
+| SSR-safe (no hooks)                 | ✅                       | ⚠️ (limited)        |
+| MDAST + HAST access via `astRef`    | ✅                       | ❌                  |
+| Component-level overrides           | ✅                       | ✅                  |
+| Unified plugin support              | ✅                       | ✅                  |
+| Tiny bundle (minzipped)             | **~35 kB**               | ~45 kB              |
+| Built-in DOCX-friendly AST output   | ✅                       | ❌                  |
+
 ---
 
-## 🚀 Installation
+## 📦 Installation
 
 ```bash
 pnpm add @m2d/react-markdown
@@ -39,10 +56,30 @@ yarn add @m2d/react-markdown
 
 ---
 
-## ⚡ Quick Example
+## 🚀 Server vs Client
+
+By default, this package is SSR-safe and has **no client-specific hooks**.
+
+### ✅ Server (default):
 
 ```tsx
-import { Md } from "mdx-render";
+import { Md } from "@m2d/react-markdown";
+```
+
+### 🔁 Client (for dynamic reactivity/memoization):
+
+```tsx
+import { Md } from "@m2d/react-markdown/client";
+```
+
+This version supports client-side behavior with memoization and dynamic JSX rendering.
+
+---
+
+## ⚡ Example: Rendering + Exporting DOCX
+
+```tsx
+import { Md } from "@m2d/react-markdown/client";
 import { toDocx } from "mdast2docx";
 import { useRef } from "react";
 
@@ -55,7 +92,7 @@ export default function Page() {
       <button
         onClick={() => {
           const doc = toDocx(astRef.current[0].mdast);
-          // Export DOCX, or save
+          // Save or download doc
         }}>
         Export to DOCX
       </button>
@@ -64,48 +101,50 @@ export default function Page() {
 }
 ```
 
+> Note for Server Component use you can replace useRef with custom ref object `const astRef = {current: undefined} as AstRef`
+
 ---
 
 ## 🧠 JSX-Aware Parsing
 
-Unlike other libraries, this renderer supports **JSX as children**, which means you can nest Markdown inside arbitrary components:
+Unlike most markdown renderers, `@m2d/react-markdown` supports **arbitrary JSX as children**:
 
 ```tsx
 <Md>
-  <section>{`# Title\n\nContent.`}</section>
+  <article>{"# Markdown Heading\n\nSome **rich** content."}</article>
 </Md>
 ```
 
-> Note: `astRef.current` is an array — one entry per Markdown segment.
-> Each entry contains `{ mdast, hast }` for fine-grained control.
+> `astRef.current` is an array — one per Markdown string — each with `{ mdast, hast }`.
 
 ---
 
-## ✨ Component Overrides
-
-Override default HTML rendering with your own components:
+## 🎨 Component Overrides
 
 ```tsx
+import { Md, Unwrap, Omit } from "@m2d/react-markdown";
+
 <Md
   components={{
-		code: (props) => <CodeWithHighlights {...props} />
-    em: Unwrap, // Renders <em> content without tags
-    blockquote: Omit, // Removes <blockquote> completely
+    em: Unwrap,
+    blockquote: Omit,
+    code: props => <CodeBlock {...props} />,
   }}>
-  {`*This will be unwrapped*\n\n> This will be removed!`}
-</Md>
+  {`*em is unwrapped*\n\n> blockquote is removed`}
+</Md>;
 ```
 
 Use the built-in helpers:
 
-- `Unwrap` – renders children, ignores tag & props.
-- `Omit` – removes the element and its content entirely.
+- `Unwrap` – renders only children
+- `Omit` – removes element and content entirely
+- `CodeBlock` - it is your custom component
 
 ---
 
-## 🧩 Plugin Support
+## 🔌 Plugin Support (Unified)
 
-Use any `remark` or `rehype` plugins with full flexibility:
+Use any `remark` or `rehype` plugin:
 
 ```tsx
 <Md remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeSlug, rehypeAutolinkHeadings]}>
@@ -115,7 +154,7 @@ Use any `remark` or `rehype` plugins with full flexibility:
 
 ---
 
-## 📦 astRef: MDAST + HAST Access
+## 📂 Accessing MDAST + HAST
 
 ```ts
 type astRef = {
@@ -123,37 +162,36 @@ type astRef = {
 };
 ```
 
-Each markdown block is processed independently to allow full JSX flexibility.
-You can access all parsed trees via `astRef.current`, ideal for:
+Useful for:
 
-- DOCX/PDF generation (`mdast2docx`)
-- Markdown linting or analytics
-- AST-aware transformations
+- 📄 DOCX export (`mdast2docx`)
+- 🧪 AST testing or analysis
+- 🛠️ Custom tree manipulation
 
 ---
 
 ## 🧭 Roadmap
 
-- [ ] 🔄 Merge surrounding JSX + `<Md>` blocks into unified MDAST/HAST
-- [x] 🧪 Add test utilities for structural validation
-- [x] 📚 Provide Next.js examples with DOCX export
+- [ ] 🔄 Merge JSX + `<Md>` segments into unified AST
+- [x] 🧪 Structural test utilities
+- [x] 🧑‍🏫 Next.js + DOCX example
 
 ---
 
-## 📘 Related Projects
+## 🌍 Related Projects
 
-- [mdast2docx](https://github.com/md2docx/mdast2docx) – Convert MDAST to Word (.docx)
-- [unifiedjs](https://unifiedjs.com/) – Syntax tree processing toolkit
-- [react-markdown](https://github.com/remarkjs/react-markdown) – A simpler but less flexible Markdown renderer
-
----
-
-## License
-
-This library is licensed under the MPL-2.0 open-source license.
-
-> <img src="https://raw.githubusercontent.com/mayank1513/mayank1513/main/popper.png" style="height: 20px"/> Please enroll in [our courses](https://mayank-chaudhari.vercel.app/courses) or [sponsor](https://github.com/sponsors/mayank1513) our work.
+- [`mdast2docx`](https://github.com/md2docx/mdast2docx) – Convert MDAST → `.docx`
+- [`unified`](https://unifiedjs.com/) – Syntax tree ecosystem
+- [`react-markdown`](https://github.com/remarkjs/react-markdown) – Popular alternative (less customizable)
 
 ---
 
-<p align="center" style="text-align:center">with 💖 by <a href="https://mayank-chaudhari.vercel.app" target="_blank">Mayank Kumar Chaudhari</a></p>
+## 📘 License
+
+Licensed under the [MPL-2.0](https://www.mozilla.org/en-US/MPL/2.0/).
+
+> 💡 Want to support this project? [Sponsor](https://github.com/sponsors/mayank1513) or check out our [courses](https://mayank-chaudhari.vercel.app/courses)!
+
+---
+
+<p align="center" style="text-align:center">Built with ❤️ by <a href="https://mayank-chaudhari.vercel.app" target="_blank">Mayank Kumar Chaudhari</a></p>
