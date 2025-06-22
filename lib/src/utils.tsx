@@ -159,39 +159,3 @@ export const Markdown = ({
     />
   );
 };
-
-interface MarkdownRecursiveProps {
-  children: ReactNode;
-  props: Omit<MdProps, "wrapper">;
-}
-
-/**
- * Recursively traverses React children and injects markdown rendering
- * into string-based content, preserving JSX wrapper structure.
- */
-export const MarkdownRecursive = ({ children, props }: MarkdownRecursiveProps) => {
-  if (typeof children === "string") return <Markdown {...props}>{children}</Markdown>;
-
-  if (isValidElement(children)) {
-    let { type: Tag, props: innerProps } = children;
-
-    if (typeof Tag === "function") {
-      // Evaluate factory-style functional components to unwrap structure
-      // @ts-expect-error call signature not always inferable
-      const jsx = Tag(innerProps);
-      Tag = jsx.type;
-      innerProps = jsx.props;
-    }
-
-    return (
-      <Tag {...(innerProps as IntrinsicProps)} key={uuid()}>
-        <MarkdownRecursive props={props}>
-          {(innerProps as IntrinsicProps).children}
-        </MarkdownRecursive>
-      </Tag>
-    );
-  }
-  // Non-string, non-element nodes are returned as-is
-  /* v8 ignore next 2 should never reach here, but in case */
-  return children;
-};

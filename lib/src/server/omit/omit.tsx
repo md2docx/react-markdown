@@ -1,4 +1,4 @@
-import { ComponentProps } from "../md";
+import { ComponentProps } from "../../utils";
 
 /**
  * Props for the `Omit` component.

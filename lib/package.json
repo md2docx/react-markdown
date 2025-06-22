@@ -103,9 +103,13 @@
     "remark-rehype": "^11.1.2",
     "tsup": "^8.5.0",
     "typescript": "^5.8.3",
-    "unified": "^11.0.5",
     "vite-tsconfig-paths": "^5.1.4",
     "vitest": "^3.1.4"
+  },
+  "dependencies": {
+    "remark-parse": "^11.0.0",
+    "remark-rehype": "^11.1.2",
+    "unified": "^11.0.5"
   },
   "peerDependencies": {
     "@types/react": ">=16.8",

@@ -1,5 +1,33 @@
-import { Fragment } from "react/jsx-runtime";
-import { MarkdownRecursive, MdProps, uuid } from "../../utils";
+import { IntrinsicProps, Markdown, MdProps } from "../../utils";
+import { isValidElement, ReactNode, Fragment } from "react";
+
+interface MarkdownRecursiveProps {
+  children: ReactNode;
+  markdownProps: Omit<MdProps, "wrapper">;
+}
+
+/**
+ * Recursively traverses React children and injects markdown rendering
+ * into string-based content, preserving JSX wrapper structure.
+ */
+export const MarkdownRecursive = ({ children, markdownProps }: MarkdownRecursiveProps) => {
+  if (typeof children === "string") return <Markdown {...markdownProps}>{children}</Markdown>;
+
+  if (isValidElement(children)) {
+    const { type: Tag, props: innerProps } = children;
+
+    return (
+      <Tag {...(innerProps as IntrinsicProps)}>
+        <MarkdownRecursive markdownProps={markdownProps}>
+          {(innerProps as IntrinsicProps).children}
+        </MarkdownRecursive>
+      </Tag>
+    );
+  }
+  // Non-string, non-element nodes are returned as-is
+  /* v8 ignore next 2 should never reach here, but in case */
+  return children;
+};
 
 /**
  * The Markdown renderer component.
@@ -26,8 +54,7 @@ export const Md = ({
     // @ts-expect-error - props are valid for HTML elements but cannot be statically inferred on Fragment
     <Wrapper {...props}>
       <MarkdownRecursive
-        key={uuid()}
-        props={{
+        markdownProps={{
           remarkPlugins,
           rehypePlugins,
           remarkRehypeOptions,
