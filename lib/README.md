@@ -24,15 +24,16 @@
 
 Compared to `react-markdown`, this library offers:
 
-| Feature                             | `@m2d/react-markdown` ✅ | `react-markdown` ❌ |
-| ----------------------------------- | ------------------------ | ------------------- |
-| Full JSX support (not just strings) | ✅                       | ❌                  |
-| SSR-safe (no hooks)                 | ✅                       | ⚠️ (limited)        |
-| MDAST + HAST access via `astRef`    | ✅                       | ❌                  |
-| Component-level overrides           | ✅                       | ✅                  |
-| Unified plugin support              | ✅                       | ✅                  |
-| Tiny bundle (minzipped)             | **~35 kB**               | ~45 kB              |
-| Built-in DOCX-friendly AST output   | ✅                       | ❌                  |
+| Feature                                | `@m2d/react-markdown` ✅ | `react-markdown` ❌ |
+| -------------------------------------- | ------------------------ | ------------------- |
+| Full JSX support (not just strings)    | ✅                       | ❌                  |
+| SSR-safe (no hooks)                    | ✅                       | ✅                  |
+| Client Side component with memoization | ✅                       | ❌                  |
+| MDAST + HAST access via `astRef`       | ✅                       | ❌                  |
+| Component-level overrides              | ✅                       | ✅                  |
+| Unified plugin support                 | ✅                       | ✅                  |
+| Tiny bundle (minzipped)                | **~35 kB**               | ~45 kB              |
+| Built-in DOCX-friendly AST output      | ✅                       | ❌                  |
 
 ---
 
