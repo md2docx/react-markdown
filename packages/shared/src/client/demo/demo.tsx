@@ -1,7 +1,8 @@
 "use client";
 
 import styles from "./demo.module.scss";
-import { Md, AstArrayElement } from "@m2d/react-markdown";
+import { Md } from "@m2d/react-markdown";
+import { AstArrayElement } from "@m2d/react-markdown/utils";
 import md from "../../../../../sample.md?raw";
 import remarkGfm from "remark-gfm";
 import remarkFrontmatter from "remark-frontmatter";

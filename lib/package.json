@@ -70,6 +70,16 @@
       "types": "./dist/test-utils.d.ts",
       "import": "./dist/test-utils.mjs",
       "require": "./dist/test-utils.js"
+    },
+    "./utils": {
+      "types": "./dist/utils.d.ts",
+      "import": "./dist/utils.mjs",
+      "require": "./dist/utils.js"
+    },
+    "./dist/utils": {
+      "types": "./dist/utils.d.ts",
+      "import": "./dist/utils.mjs",
+      "require": "./dist/utils.js"
     }
   },
   "scripts": {
