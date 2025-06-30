@@ -1,5 +1,12 @@
 # @repo/shared
 
+## 0.0.4
+
+### Patch Changes
+
+- Updated dependencies [6fa6b46]
+  - @m2d/react-markdown@0.2.1
+
 ## 0.0.3
 
 ### Patch Changes

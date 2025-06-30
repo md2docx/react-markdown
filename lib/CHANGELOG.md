@@ -1,5 +1,11 @@
 # @m2d/react-markdown
 
+## 0.2.1
+
+### Patch Changes
+
+- 6fa6b46: fix: Add ./utils to exports.
+
 ## 0.2.0
 
 ### Minor Changes
