@@ -187,6 +187,19 @@ Useful for:
 
 ---
 
+## 🙏 Acknowledgements
+
+We are deeply grateful to the open-source community whose work made this project possible.
+
+- 🌱 **[react-markdown](https://github.com/remarkjs/react-markdown)** – For pioneering a React-based Markdown renderer. This library builds on its ideas while extending flexibility and SSR-readiness.
+- 🛠 **[unified](https://github.com/unifiedjs/unified)** – The brilliant engine powering our markdown-to-AST transformations.
+- ✨ **[remark](https://github.com/remarkjs/remark)** and **[rehype](https://github.com/rehypejs/rehype)** – For their modular ecosystems that make parsing and rendering delightful.
+- 🧾 **[mdast2docx](https://github.com/md2docx/mdast2docx)** – Our sister project that inspired the MDAST-first architecture of this library.
+
+> 💖 To the maintainers, contributors, and communities behind these projects — thank you for your generosity, vision, and dedication to making the web better for everyone.
+
+---
+
 ## 📘 License
 
 Licensed under the [MPL-2.0](https://www.mozilla.org/en-US/MPL/2.0/).
