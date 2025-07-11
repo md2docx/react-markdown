@@ -81,39 +81,6 @@ export interface MdProps extends HTMLProps<HTMLDivElement> {
   skipHtml?: boolean;
 }
 
-/**
- * Renders a single HAST Element recursively as a React element,
- * supporting string HTML tags and optional component overrides.
- */
-const El = ({
-  node,
-  components,
-  skipHtml,
-}: { node: Element } & Pick<MdProps, "components" | "skipHtml">) => {
-  const { tagName, properties, children } = node;
-  const cleanedProps = handleAriaAndDataProps(properties ?? {}) as IntrinsicProps;
-
-  const child = children.map(node =>
-    node.type === "text" || (node.type === "raw" && !skipHtml)
-      ? node.value.replace(/\n/g, "") || null
-      : node.type === "element" && <El key={uuid()} {...{ node, components }} />,
-  );
-
-  if (!tagName) return child;
-
-  const Component = components?.[tagName as keyof JSX.IntrinsicElements] ?? tagName;
-
-  if (typeof Component === "string") {
-    return emptyHtmlTags.includes(Component) ? (
-      <Component {...cleanedProps} />
-    ) : (
-      <Component {...cleanedProps}>{child}</Component>
-    );
-  }
-
-  return <Component {...{ ...cleanedProps, node }}>{child}</Component>;
-};
-
 interface MarkdownProps extends MdProps {
   /**
    * Raw markdown string to be parsed and rendered.
