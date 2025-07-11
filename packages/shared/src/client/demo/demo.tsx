@@ -34,7 +34,10 @@ export function Demo() {
         remarkPlugins={[remarkGfm, remarkFrontmatter, remarkMath]}
         astRef={astRef}
         style={{ textAlign: "start", padding: "20px" }}>
-        {md}
+        <section>{md}</section>
+        <footer>
+          Crafter with ❤️ by _[Mayank Kumar Chaudhari](https://mayank-chaudhari.vercel.app)_
+        </footer>
       </Md>
     </div>
   );
