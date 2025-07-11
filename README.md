@@ -123,7 +123,8 @@ Unlike most markdown renderers, `@m2d/react-markdown` supports **arbitrary JSX a
 ## 🎨 Component Overrides
 
 ```tsx
-import { Md, Unwrap, Omit } from "@m2d/react-markdown";
+import { Md } from "@m2d/react-markdown";
+import { Unwrap, Omit } from "@m2d/react-markdown/server";
 
 <Md
   components={{

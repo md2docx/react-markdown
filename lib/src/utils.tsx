@@ -1,9 +1,12 @@
-import { FC, HTMLProps, isValidElement, JSX, ReactNode } from "react";
+import { FC, HTMLProps, JSX } from "react";
 import remarkParse from "remark-parse";
 import remarkRehype, { type Options } from "remark-rehype";
 import { PluggableList, unified } from "unified";
 import { Root } from "mdast";
 import { Element, Root as HastRoot, Properties } from "hast";
+import { toJsxRuntime } from "hast-util-to-jsx-runtime";
+import { Fragment, jsx, jsxs } from "react/jsx-runtime";
+import { visit } from "unist-util-visit";
 
 export const handleAriaAndDataProps = (properties: Properties) =>
   Object.fromEntries(
@@ -147,15 +150,25 @@ export const Markdown = ({
     astRef.current.push({ mdast, hast });
   }
 
-  return (
-    <El
-      {...{
-        components,
-        skipHtml,
-        node: {
-          children: Array.isArray(hast) ? hast : hast.children,
-        } as Element,
-      }}
-    />
-  );
+  visit(hast, (node, index, parent) => {
+    if (node.type === "raw" && parent && typeof index === "number") {
+      if (skipHtml) {
+        parent.children.splice(index, 1);
+      } else {
+        parent.children[index] = { type: "text", value: node.value };
+      }
+
+      return index;
+    }
+  });
+
+  return toJsxRuntime(hast, {
+    Fragment,
+    components,
+    ignoreInvalidStyle: true,
+    jsx,
+    jsxs,
+    passKeys: true,
+    passNode: true,
+  });
 };
