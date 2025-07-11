@@ -1,5 +1,15 @@
 # @m2d/react-markdown
 
+## 0.3.0
+
+### Minor Changes
+
+- fbc66a3: refactor: update imports and enhance Markdown component for faster JSX runtime support
+
+### Patch Changes
+
+- 160322a: enhance MarkdownRecursive to handle array of children with unique keys
+
 ## 0.2.1
 
 ### Patch Changes
