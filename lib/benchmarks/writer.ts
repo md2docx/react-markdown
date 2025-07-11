@@ -23,8 +23,8 @@ export function writeBenchmarkMarkdown(
     const res2: number[] = [];
     const res3: number[] = [];
     chart1Files.forEach(testName => {
-      const r1 = fileResults[testName].find(row => row.name === "@m2d/react-markdown")?.ops ?? 0;
-      const r2 = fileResults[testName].find(row => row.name === "react-markdown")?.ops ?? 0;
+      const r1 = fileResults[testName].find(row => row.name === "react-markdown")?.ops ?? 0;
+      const r2 = fileResults[testName].find(row => row.name === "@m2d/react-markdown")?.ops ?? 0;
       res1.push(r1);
       res2.push(r2);
       res3.push(((r1 - r2) / r2) * 100);
@@ -34,23 +34,23 @@ export function writeBenchmarkMarkdown(
 xychart-beta
     title "Render Speed Comparison (Ops/sec)"
     x-axis ["${chart1Files.join('", "')}"]
-    y-axis "Ops/sec"
-    bar [${res1.join(", ")}]  %% @m2d/react-markdown
-    bar [${res2.join(", ")}]  %% react-markdown
+    y-axis "Ops/sec (higher is better)"
+    bar [${res1.join(", ")}]  %% react-markdown
+    bar [${res2.join(", ")}]  %% @m2d/react-markdown
 ~~~\n`);
 
     md.push(`~~~mermaid
 xychart-beta
     title "Render Speed Comparison (Ops/sec)"
     x-axis ["${chart1Files.join('", "')}"]
-    y-axis "Δ from baseline (%)"
+    y-axis "Δ from react-markdown (%)"
     line [${res3.join(", ")}]  %% difference percent
 ~~~\n`);
 
     md.push(`<details><summary>Detailed Tables</summary>`);
 
     Object.entries(fileResults).forEach(([file, rows]) => {
-      md.push(`\n### ${file}\n`);
+      md.push(`\n### [${file}](./lib/fixtures/${file})\n`);
       const baseline = rows.find(r => r.name === "react-markdown")?.ops ?? rows[0].ops;
 
       md.push(`| Library | Ops/sec | ±% | Δ from baseline | Memory (KB) |`);
