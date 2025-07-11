@@ -1,0 +1,419 @@
+{
+  "no": {
+    "sample.md": [
+      {
+        "name": "@m2d/react-markdown",
+        "ops": 42.74708438167588,
+        "margin": 3.1493983894881623
+      },
+      {
+        "name": "react-markdown",
+        "ops": 42.98277392923757,
+        "margin": 2.5108926226895676
+      }
+    ],
+    "short.md": [
+      {
+        "name": "@m2d/react-markdown",
+        "ops": 1531.3757006079813,
+        "margin": 4.087216414945013
+      },
+      {
+        "name": "react-markdown",
+        "ops": 1851.9390643331176,
+        "margin": 2.8258801868390995
+      }
+    ],
+    "medium.md": [
+      {
+        "name": "@m2d/react-markdown",
+        "ops": 286.5658635012855,
+        "margin": 4.248816163584699
+      },
+      {
+        "name": "react-markdown",
+        "ops": 276.00747808036925,
+        "margin": 4.365476215061842
+      }
+    ],
+    "long.md": [
+      {
+        "name": "@m2d/react-markdown",
+        "ops": 20.635262930563872,
+        "margin": 4.371644878505462
+      },
+      {
+        "name": "react-markdown",
+        "ops": 18.792480150335255,
+        "margin": 4.886883318740262
+      }
+    ],
+    "short-simple.md": [
+      {
+        "name": "@m2d/react-markdown",
+        "ops": 975.2144674133882,
+        "margin": 3.63220674044318
+      },
+      {
+        "name": "react-markdown",
+        "ops": 983.5741252107894,
+        "margin": 3.135455816598657
+      }
+    ],
+    "medium-formatting.md": [
+      {
+        "name": "@m2d/react-markdown",
+        "ops": 611.6894985569703,
+        "margin": 3.013959035373157
+      },
+      {
+        "name": "react-markdown",
+        "ops": 645.4271527261262,
+        "margin": 2.2518994079362176
+      }
+    ],
+    "long-tutorial.md": [
+      {
+        "name": "@m2d/react-markdown",
+        "ops": 390.723965985505,
+        "margin": 2.798733891444964
+      },
+      {
+        "name": "react-markdown",
+        "ops": 361.5177777014237,
+        "margin": 2.521911127523275
+      }
+    ],
+    "gfm-complexity.md": [
+      {
+        "name": "@m2d/react-markdown",
+        "ops": 771.5341523280497,
+        "margin": 3.479259467012237
+      },
+      {
+        "name": "react-markdown",
+        "ops": 825.411461792101,
+        "margin": 2.337091485889471
+      }
+    ],
+    "deeply-nested-lists.md": [
+      {
+        "name": "@m2d/react-markdown",
+        "ops": 614.4103650712425,
+        "margin": 3.3878555809063218
+      },
+      {
+        "name": "react-markdown",
+        "ops": 634.6825328027951,
+        "margin": 3.0217868410897615
+      }
+    ],
+    "site-content.md": [
+      {
+        "name": "@m2d/react-markdown",
+        "ops": 640.2005588716024,
+        "margin": 2.687020064360469
+      },
+      {
+        "name": "react-markdown",
+        "ops": 649.7068546260045,
+        "margin": 2.2689517784718953
+      }
+    ],
+    "All files": [
+      {
+        "name": "react-markdown",
+        "ops": 10.928697086284455,
+        "margin": 3.8318922533268456
+      },
+      {
+        "name": "@m2d/react-markdown",
+        "ops": 11.361060403806082,
+        "margin": 3.6759820409301156
+      },
+      {
+        "name": "@m2d/react-markdown as nested jsx",
+        "ops": 11.180671352284898,
+        "margin": 3.787295962068112
+      }
+    ]
+  },
+  "remark-gfm, remark-math, and remark-frontmatter": {
+    "sample.md": [
+      {
+        "name": "@m2d/react-markdown",
+        "ops": 29.082675958339877,
+        "margin": 2.156768616953331
+      },
+      {
+        "name": "react-markdown",
+        "ops": 27.866921662269842,
+        "margin": 1.854725697011497
+      }
+    ],
+    "short.md": [
+      {
+        "name": "@m2d/react-markdown",
+        "ops": 983.1686946675665,
+        "margin": 1.3743912669953593
+      },
+      {
+        "name": "react-markdown",
+        "ops": 1074.7174608421187,
+        "margin": 1.3496359984490789
+      }
+    ],
+    "medium.md": [
+      {
+        "name": "@m2d/react-markdown",
+        "ops": 184.12467512549756,
+        "margin": 2.9066671032211078
+      },
+      {
+        "name": "react-markdown",
+        "ops": 178.4132210116435,
+        "margin": 2.8084319185668463
+      }
+    ],
+    "long.md": [
+      {
+        "name": "@m2d/react-markdown",
+        "ops": 16.564404801792207,
+        "margin": 3.587871940116675
+      },
+      {
+        "name": "react-markdown",
+        "ops": 15.800009201624405,
+        "margin": 3.5291895862957707
+      }
+    ],
+    "short-simple.md": [
+      {
+        "name": "@m2d/react-markdown",
+        "ops": 598.6925479890702,
+        "margin": 1.2821149562725644
+      },
+      {
+        "name": "react-markdown",
+        "ops": 631.3869509982479,
+        "margin": 1.1811170152416268
+      }
+    ],
+    "medium-formatting.md": [
+      {
+        "name": "@m2d/react-markdown",
+        "ops": 426.9162928299208,
+        "margin": 1.1355042985631263
+      },
+      {
+        "name": "react-markdown",
+        "ops": 200.0710934220817,
+        "margin": 7.839700450385986
+      }
+    ],
+    "long-tutorial.md": [
+      {
+        "name": "@m2d/react-markdown",
+        "ops": 193.31801041845242,
+        "margin": 9.921574753902991
+      },
+      {
+        "name": "react-markdown",
+        "ops": 235.68832089226325,
+        "margin": 1.5726928647003986
+      }
+    ],
+    "gfm-complexity.md": [
+      {
+        "name": "@m2d/react-markdown",
+        "ops": 414.0911487677954,
+        "margin": 2.995465126627123
+      },
+      {
+        "name": "react-markdown",
+        "ops": 418.03644605120616,
+        "margin": 2.5047022830882675
+      }
+    ],
+    "deeply-nested-lists.md": [
+      {
+        "name": "@m2d/react-markdown",
+        "ops": 415.2958547344348,
+        "margin": 1.7030721973907024
+      },
+      {
+        "name": "react-markdown",
+        "ops": 411.9566502056854,
+        "margin": 1.8086609089084258
+      }
+    ],
+    "site-content.md": [
+      {
+        "name": "@m2d/react-markdown",
+        "ops": 445.8356188710065,
+        "margin": 1.2457920642045548
+      },
+      {
+        "name": "react-markdown",
+        "ops": 457.94329696482714,
+        "margin": 1.410380300104795
+      }
+    ],
+    "All files": [
+      {
+        "name": "react-markdown",
+        "ops": 8.174038243682,
+        "margin": 3.1491059579188705
+      },
+      {
+        "name": "@m2d/react-markdown",
+        "ops": 7.916570700995681,
+        "margin": 3.334001090104863
+      },
+      {
+        "name": "@m2d/react-markdown as nested jsx",
+        "ops": 8.10126172088014,
+        "margin": 2.896125605566574
+      }
+    ]
+  },
+  "remark-gfm, and rehype-raw": {
+    "sample.md": [
+      {
+        "name": "@m2d/react-markdown",
+        "ops": 24.17786223599516,
+        "margin": 1.9381887247422778
+      },
+      {
+        "name": "react-markdown",
+        "ops": 24.55039890014213,
+        "margin": 1.485019112819352
+      }
+    ],
+    "short.md": [
+      {
+        "name": "@m2d/react-markdown",
+        "ops": 870.7057124894626,
+        "margin": 1.4584309203699772
+      },
+      {
+        "name": "react-markdown",
+        "ops": 1031.1096191025754,
+        "margin": 1.1416735228392947
+      }
+    ],
+    "medium.md": [
+      {
+        "name": "@m2d/react-markdown",
+        "ops": 162.7275824271953,
+        "margin": 2.5628139840352153
+      },
+      {
+        "name": "react-markdown",
+        "ops": 164.37514683723185,
+        "margin": 2.444595974095591
+      }
+    ],
+    "long.md": [
+      {
+        "name": "@m2d/react-markdown",
+        "ops": 14.424855249949237,
+        "margin": 3.5577466182169335
+      },
+      {
+        "name": "react-markdown",
+        "ops": 14.019699516469753,
+        "margin": 3.403465493485481
+      }
+    ],
+    "short-simple.md": [
+      {
+        "name": "@m2d/react-markdown",
+        "ops": 554.7798697813188,
+        "margin": 1.0263647939516976
+      },
+      {
+        "name": "react-markdown",
+        "ops": 578.7042068259314,
+        "margin": 1.4260338597432547
+      }
+    ],
+    "medium-formatting.md": [
+      {
+        "name": "@m2d/react-markdown",
+        "ops": 402.9810377580538,
+        "margin": 1.072016811761951
+      },
+      {
+        "name": "react-markdown",
+        "ops": 422.1711023602763,
+        "margin": 1.084320507025387
+      }
+    ],
+    "long-tutorial.md": [
+      {
+        "name": "@m2d/react-markdown",
+        "ops": 212.73842839589844,
+        "margin": 1.2979512510074058
+      },
+      {
+        "name": "react-markdown",
+        "ops": 212.08201139689257,
+        "margin": 1.1788314524242725
+      }
+    ],
+    "gfm-complexity.md": [
+      {
+        "name": "@m2d/react-markdown",
+        "ops": 375.09715543283266,
+        "margin": 2.091377602129898
+      },
+      {
+        "name": "react-markdown",
+        "ops": 384.92039307308175,
+        "margin": 1.7916669054496637
+      }
+    ],
+    "deeply-nested-lists.md": [
+      {
+        "name": "@m2d/react-markdown",
+        "ops": 264.7146944640334,
+        "margin": 8.586728468108886
+      },
+      {
+        "name": "react-markdown",
+        "ops": 392.5829796542143,
+        "margin": 1.1554806485327342
+      }
+    ],
+    "site-content.md": [
+      {
+        "name": "@m2d/react-markdown",
+        "ops": 411.9572994318351,
+        "margin": 1.3718092923871366
+      },
+      {
+        "name": "react-markdown",
+        "ops": 435.0696872059333,
+        "margin": 1.3077531830422384
+      }
+    ],
+    "All files": [
+      {
+        "name": "react-markdown",
+        "ops": 7.222618931254631,
+        "margin": 2.5866003742238086
+      },
+      {
+        "name": "@m2d/react-markdown",
+        "ops": 7.460295281142587,
+        "margin": 2.978680775521445
+      },
+      {
+        "name": "@m2d/react-markdown as nested jsx",
+        "ops": 5.052434356222568,
+        "margin": 12.555713427904202
+      }
+    ]
+  }
+}

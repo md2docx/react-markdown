@@ -1,6 +1,4 @@
 import Benchmark, { Suite } from "benchmark";
-import fs from "fs";
-import path from "path";
 import ReactMarkdown from "react-markdown";
 import { renderToString } from "react-dom/server";
 import { Md } from "../dist";
@@ -8,55 +6,134 @@ import chalk from "chalk";
 import Table from "cli-table3";
 import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
-import { EOL } from "os";
+import remarkFrontmatter from "remark-frontmatter";
+import rehypeRaw from "rehype-raw";
+import { files, markdowns } from "../fixtures";
+import { writeBenchmarkMarkdown } from "./writer";
+import { PluggableList } from "unified";
+
+const log = console.log;
+
+console.log = () => {};
+console.debug = () => {};
+console.info = () => {};
+console.error = () => {};
 
 const render = (component: React.ReactElement) => renderToString(component);
 
-const fixturesDir = path.resolve("fixtures");
-const files = ["sample.md", "short.md", "medium.md", "long.md"];
+export type BenchResult = { name: string; ops: number; margin: number };
+export type BenchResults = { [pluginDescription: string]: { [file: string]: BenchResult[] } };
+const benchmarkResults: BenchResults = {};
 
-const markdowns = files.map(file => fs.readFileSync(path.join(fixturesDir, file), "utf8"));
+const pluginLists: {
+  [pluginDescription: string]: { remarkPlugins?: PluggableList; rehypePlugins?: PluggableList };
+} = {
+  no: {},
+  "remark-gfm, remark-math, and remark-frontmatter": {
+    remarkPlugins: [remarkGfm, remarkMath, remarkFrontmatter],
+  },
+  "remark-gfm, and rehype-raw": { remarkPlugins: [remarkGfm], rehypePlugins: [rehypeRaw] },
+};
 
-type BenchResult = { name: string; ops: number; margin: number };
-const benchmarkResults: Record<string, BenchResult[]> = {};
+Object.entries(pluginLists).forEach(([pluginDescription, plugins]) => {
+  benchmarkResults[pluginDescription] = {};
 
-files.forEach((file, index) => {
-  const markdown = markdowns[index];
+  files.forEach((file, index) => {
+    const markdown = markdowns[index];
 
-  console.log(`\n📄 Benchmarking: ${file}\n`);
+    log(`\n📄 Benchmarking: ${file} with ${pluginDescription} plugins. \n`);
+    const suite = new Benchmark.Suite();
+
+    suite
+      .add(
+        "@m2d/react-markdown",
+        () => {
+          render(<Md {...plugins}>{markdown}</Md>);
+        },
+        { minSamples: 100 },
+      )
+      .add(
+        "react-markdown",
+        () => {
+          render(<ReactMarkdown {...plugins}>{markdown}</ReactMarkdown>);
+        },
+        { minSamples: 100 },
+      )
+      .on("cycle", (event: any) => {
+        log(String(event.target));
+      })
+      .on("complete", function (this: Suite) {
+        const table = new Table({
+          head: [chalk.bold("Library"), chalk.bold("Ops/sec"), chalk.bold("±%")],
+          colAligns: ["left", "right", "right"],
+        });
+
+        const results: BenchResult[] = [];
+        this.forEach((bench: Benchmark) => {
+          const name = bench.name ?? "";
+          const ops = bench.hz;
+          const margin = bench.stats.rme;
+          table.push([name, ops.toFixed(2), margin.toFixed(2)]);
+          results.push({ name, ops, margin });
+        });
+
+        const testName = file;
+        benchmarkResults[pluginDescription][testName] = results;
+
+        log(table.toString());
+        log(chalk.greenBright("Fastest:"), this.filter("fastest").map("name").join(", "));
+      })
+      .run({ async: false });
+  });
+
+  log(`\n📄 Benchmarking: All files rendering together \n`);
   const suite = new Benchmark.Suite();
-
   suite
-    .add(
-      "@m2d/react-markdown",
-      () => {
-        render(<Md>{markdown}</Md>);
-      },
-      { minSamples: 100 },
-    )
-    .add(
-      "@m2d/react-markdown with remark-math and remark-gfm",
-      () => {
-        render(<Md remarkPlugins={[remarkGfm, remarkMath]}>{markdown}</Md>);
-      },
-      { minSamples: 100 },
-    )
     .add(
       "react-markdown",
       () => {
-        render(<ReactMarkdown>{markdown}</ReactMarkdown>);
+        render(
+          <>
+            {markdowns.map((markdown, i) => (
+              <ReactMarkdown key={i} {...plugins}>
+                {markdown}
+              </ReactMarkdown>
+            ))}
+          </>,
+        );
       },
       { minSamples: 100 },
     )
     .add(
-      "react-markdown with remark-math and remark-gfm",
+      "@m2d/react-markdown",
       () => {
-        render(<ReactMarkdown remarkPlugins={[remarkGfm, remarkMath]}>{markdown}</ReactMarkdown>);
+        render(
+          <>
+            {markdowns.map((markdown, i) => (
+              <Md key={i} {...plugins}>
+                {markdown}
+              </Md>
+            ))}
+          </>,
+        );
+      },
+      { minSamples: 100 },
+    )
+    .add(
+      "@m2d/react-markdown as nested jsx",
+      () => {
+        render(
+          <Md {...plugins}>
+            {markdowns.map((markdown, i) => (
+              <section key={i}>{markdown}</section>
+            ))}
+          </Md>,
+        );
       },
       { minSamples: 100 },
     )
     .on("cycle", (event: any) => {
-      console.log(String(event.target));
+      log(String(event.target));
     })
     .on("complete", function (this: Suite) {
       const table = new Table({
@@ -73,95 +150,15 @@ files.forEach((file, index) => {
         results.push({ name, ops, margin });
       });
 
-      const testName = file;
-      benchmarkResults[testName] = results;
+      const testName = "All files";
+      benchmarkResults[pluginDescription][testName] = results;
 
-      console.log(table.toString());
-      console.log(chalk.greenBright("Fastest:"), this.filter("fastest").map("name").join(", "));
+      log(table.toString());
+      log(chalk.greenBright("Fastest:"), this.filter("fastest").map("name").join(", "));
     })
     .run({ async: false });
 });
 
-console.log(`\n📄 Benchmarking: All files rendering together \n`);
-const suite = new Benchmark.Suite();
+writeBenchmarkMarkdown(benchmarkResults);
 
-suite
-  .add(
-    "react-markdown",
-    () => {
-      render(
-        <>
-          {markdowns.map((markdown, i) => (
-            <ReactMarkdown key={i}>{markdown}</ReactMarkdown>
-          ))}
-        </>,
-      );
-    },
-    { minSamples: 100 },
-  )
-  .add(
-    "@m2d/react-markdown",
-    () => {
-      render(
-        <>
-          {markdowns.map((markdown, i) => (
-            <Md key={i}>{markdown}</Md>
-          ))}
-        </>,
-      );
-    },
-    { minSamples: 100 },
-  )
-  .add(
-    "@m2d/react-markdown as nested jsx",
-    () => {
-      render(
-        <Md>
-          {markdowns.map((markdown, i) => (
-            <section key={i}>{markdown}</section>
-          ))}
-        </Md>,
-      );
-    },
-    { minSamples: 100 },
-  )
-  .on("cycle", (event: any) => {
-    console.log(String(event.target));
-  })
-  .on("complete", function (this: Suite) {
-    const table = new Table({
-      head: [chalk.bold("Library"), chalk.bold("Ops/sec"), chalk.bold("±%")],
-      colAligns: ["left", "right", "right"],
-    });
-
-    const results: BenchResult[] = [];
-    this.forEach((bench: Benchmark) => {
-      const name = bench.name ?? "";
-      const ops = bench.hz;
-      const margin = bench.stats.rme;
-      table.push([name, ops.toFixed(2), margin.toFixed(2)]);
-      results.push({ name, ops, margin });
-    });
-
-    const testName = "All files";
-    benchmarkResults[testName] = results;
-
-    console.log(table.toString());
-    console.log(chalk.greenBright("Fastest:"), this.filter("fastest").map("name").join(", "));
-  })
-  .run({ async: false });
-
-const md = [`# 📊 Markdown Renderer Benchmark\n`, `> Generated on ${new Date().toISOString()}\n\n`];
-
-for (const [name, results] of Object.entries(benchmarkResults)) {
-  md.push(`## 📄 ${name}\n`);
-  md.push(`| Library | Ops/sec | ±% |`);
-  md.push(`|---------|---------:|----:|`);
-  for (const { name, ops, margin } of results.sort((a, b) => b.ops - a.ops)) {
-    md.push(`| ${name} | ${ops.toFixed(2)} | ${margin.toFixed(2)} |`);
-  }
-  md.push(""); // newline
-}
-
-fs.writeFileSync("benchmark.md", md.join(EOL));
-console.log(chalk.green(`\n✅ Written to benchmark.md`));
+log(chalk.green(`\n✅ Written to benchmark.md`));

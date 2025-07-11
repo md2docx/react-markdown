@@ -90,7 +90,8 @@
     "lint": "eslint src/",
     "lint:fix": "eslint src/ --fix",
     "test": "vitest run --coverage",
-    "benchmark": "tsx benchmarks/perf.bench.tsx"
+    "benchmark": "tsx benchmarks/perf.bench.tsx",
+    "bench:w": "tsx benchmarks/index.ts"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
@@ -115,6 +116,8 @@
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-markdown": "^10.1.0",
+    "rehype-raw": "^7.0.0",
+    "remark-frontmatter": "^5.0.0",
     "remark-gfm": "^4.0.1",
     "remark-math": "^6.0.0",
     "remark-parse": "^11.0.0",
