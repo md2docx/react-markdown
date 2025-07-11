@@ -127,6 +127,7 @@ export const Markdown = ({
 
       return index;
     }
+    if (node.type === "element") node.properties.src ||= null;
   });
 
   return toJsxRuntime(hast, {
