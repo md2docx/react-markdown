@@ -2,6 +2,7 @@
   width: var(--max-width);
   max-width: 95vw;
   display: flex;
+  flex-direction: column;
   margin: auto;
   margin-bottom: 3rem;
   border-radius: 1rem;
