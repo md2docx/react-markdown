@@ -124,8 +124,6 @@ export const Markdown = ({
       } else {
         parent.children[index] = { type: "text", value: node.value };
       }
-
-      return index;
     }
     if (node.type === "element") node.properties.src ||= null;
   });

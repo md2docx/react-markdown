@@ -10,7 +10,7 @@ interface MarkdownRecursiveProps {
  * Recursively traverses React children and injects markdown rendering
  * into string-based content, preserving JSX wrapper structure.
  */
-export const MarkdownRecursive = ({ children, markdownProps }: MarkdownRecursiveProps) => {
+const MarkdownRecursive = ({ children, markdownProps }: MarkdownRecursiveProps) => {
   if (typeof children === "string") return <Markdown {...markdownProps}>{children}</Markdown>;
 
   if (Array.isArray(children)) {
