@@ -2,7 +2,7 @@
   "name": "@m2d/react-markdown",
   "author": "Mayank Kumar Chaudhari (https://mayank-chaudhari.vercel.app)",
   "private": false,
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "A modern, SSR-friendly React Markdown renderer that preserves the MDAST tree for reuse (e.g., mdast2docx), supports full JSX children, unified plugins, and component overrides.",
   "license": "MPL-2.0",
   "main": "./dist/index.js",
@@ -89,12 +89,15 @@
     "typecheck": "tsc --noEmit",
     "lint": "eslint src/",
     "lint:fix": "eslint src/ --fix",
-    "test": "vitest run --coverage"
+    "test": "vitest run --coverage",
+    "benchmark": "tsx benchmarks/perf.bench.tsx",
+    "bench:w": "tsx benchmarks/index.ts"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
     "@testing-library/react": "^16.3.0",
+    "@types/benchmark": "^2.1.5",
     "@types/hast": "^3.0.4",
     "@types/mdast": "^4.0.4",
     "@types/node": "^22.15.19",
@@ -102,6 +105,9 @@
     "@types/react-dom": "^19.1.5",
     "@vitejs/plugin-react": "^4.4.1",
     "@vitest/coverage-v8": "^3.1.4",
+    "benchmark": "^2.1.4",
+    "chalk": "^5.4.1",
+    "cli-table3": "^0.6.5",
     "esbuild-plugin-rdi": "^0.0.0",
     "esbuild-plugin-react18": "0.2.6",
     "esbuild-plugin-react18-css": "^0.0.4",
@@ -109,27 +115,29 @@
     "jsdom": "^26.1.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
+    "react-markdown": "^10.1.0",
+    "rehype-raw": "^7.0.0",
+    "remark-frontmatter": "^5.0.0",
+    "remark-gfm": "^4.0.1",
+    "remark-math": "^6.0.0",
     "remark-parse": "^11.0.0",
     "remark-rehype": "^11.1.2",
     "tsup": "^8.5.0",
+    "tsx": "^4.20.3",
     "typescript": "^5.8.3",
     "vite-tsconfig-paths": "^5.1.4",
     "vitest": "^3.1.4"
   },
   "dependencies": {
+    "hast-util-to-jsx-runtime": "^2.3.6",
     "remark-parse": "^11.0.0",
     "remark-rehype": "^11.1.2",
-    "unified": "^11.0.5"
+    "unified": "^11.0.5",
+    "unist-util-visit": "^5.0.0"
   },
   "peerDependencies": {
     "@types/react": ">=16.8",
-    "next": ">=10",
     "react": ">=16.8"
-  },
-  "peerDependenciesMeta": {
-    "next": {
-      "optional": true
-    }
   },
   "funding": [
     {

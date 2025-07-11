@@ -1,4 +1,4 @@
-import { IntrinsicProps, Markdown, MdProps } from "../../utils";
+import { IntrinsicProps, Markdown, MdProps, uuid } from "../../utils";
 import { isValidElement, ReactNode, Fragment } from "react";
 
 interface MarkdownRecursiveProps {
@@ -10,11 +10,21 @@ interface MarkdownRecursiveProps {
  * Recursively traverses React children and injects markdown rendering
  * into string-based content, preserving JSX wrapper structure.
  */
-export const MarkdownRecursive = ({ children, markdownProps }: MarkdownRecursiveProps) => {
+const MarkdownRecursive = ({ children, markdownProps }: MarkdownRecursiveProps) => {
   if (typeof children === "string") return <Markdown {...markdownProps}>{children}</Markdown>;
 
+  if (Array.isArray(children)) {
+    const prefix = uuid();
+    return children.map((child, id) => (
+      <MarkdownRecursive markdownProps={markdownProps} key={prefix + id}>
+        {child}
+      </MarkdownRecursive>
+    ));
+  }
+
   if (isValidElement(children)) {
-    const { type: Tag, props: innerProps } = children;
+    const Tag = children.type;
+    const innerProps = children.props as IntrinsicProps;
 
     return (
       <Tag {...(innerProps as IntrinsicProps)}>

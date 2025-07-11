@@ -1,9 +1,12 @@
-import { FC, HTMLProps, isValidElement, JSX, ReactNode } from "react";
+import { FC, HTMLProps, JSX } from "react";
 import remarkParse from "remark-parse";
 import remarkRehype, { type Options } from "remark-rehype";
 import { PluggableList, unified } from "unified";
 import { Root } from "mdast";
 import { Element, Root as HastRoot, Properties } from "hast";
+import { toJsxRuntime } from "hast-util-to-jsx-runtime";
+import { Fragment, jsx, jsxs } from "react/jsx-runtime";
+import { visit } from "unist-util-visit";
 
 export const handleAriaAndDataProps = (properties: Properties) =>
   Object.fromEntries(
@@ -78,39 +81,6 @@ export interface MdProps extends HTMLProps<HTMLDivElement> {
   skipHtml?: boolean;
 }
 
-/**
- * Renders a single HAST Element recursively as a React element,
- * supporting string HTML tags and optional component overrides.
- */
-const El = ({
-  node,
-  components,
-  skipHtml,
-}: { node: Element } & Pick<MdProps, "components" | "skipHtml">) => {
-  const { tagName, properties, children } = node;
-  const cleanedProps = handleAriaAndDataProps(properties ?? {}) as IntrinsicProps;
-
-  const child = children.map(node =>
-    node.type === "text" || (node.type === "raw" && !skipHtml)
-      ? node.value.replace(/\n/g, "") || null
-      : node.type === "element" && <El key={uuid()} {...{ node, components }} />,
-  );
-
-  if (!tagName) return child;
-
-  const Component = components?.[tagName as keyof JSX.IntrinsicElements] ?? tagName;
-
-  if (typeof Component === "string") {
-    return emptyHtmlTags.includes(Component) ? (
-      <Component {...cleanedProps} />
-    ) : (
-      <Component {...cleanedProps}>{child}</Component>
-    );
-  }
-
-  return <Component {...{ ...cleanedProps, node }}>{child}</Component>;
-};
-
 interface MarkdownProps extends MdProps {
   /**
    * Raw markdown string to be parsed and rendered.
@@ -147,15 +117,24 @@ export const Markdown = ({
     astRef.current.push({ mdast, hast });
   }
 
-  return (
-    <El
-      {...{
-        components,
-        skipHtml,
-        node: {
-          children: Array.isArray(hast) ? hast : hast.children,
-        } as Element,
-      }}
-    />
-  );
+  visit(hast, (node, index, parent) => {
+    if (node.type === "raw" && parent && typeof index === "number") {
+      if (skipHtml) {
+        parent.children.splice(index, 1);
+      } else {
+        parent.children[index] = { type: "text", value: node.value };
+      }
+    }
+    if (node.type === "element") node.properties.src ||= null;
+  });
+
+  return toJsxRuntime(hast, {
+    Fragment,
+    components,
+    ignoreInvalidStyle: true,
+    jsx,
+    jsxs,
+    passKeys: true,
+    passNode: true,
+  });
 };

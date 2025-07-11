@@ -1,7 +1,8 @@
 import { cleanup, render, screen } from "@testing-library/react";
-import { afterEach, describe, test, vi } from "vitest";
+import { afterEach, describe, test } from "vitest";
 import { Md } from "./md";
 import md from "../../../../sample.md?raw";
+import { uuid } from "../../utils";
 
 describe.concurrent("Md", () => {
   afterEach(cleanup);
@@ -52,6 +53,12 @@ describe.concurrent("Md", () => {
     expect(md.textContent).toContain("raw test");
   });
 
+  test("skipHtml", ({ expect }) => {
+    const testId = "md-" + uuid();
+    render(<Md data-testid={testId} skipHtml>{`Hello **world**\n\n<div>Something here</div>`}</Md>);
+    expect(screen.getByTestId(testId).textContent).toBe("Hello world");
+  });
+
   test("passes mdastRef with parsed mdast", ({ expect }) => {
     const testId = "md-root-" + crypto.randomUUID();
     const ref = { current: null as any };
@@ -69,12 +76,15 @@ describe.concurrent("Md", () => {
     render(
       <Md data-testid={testId}>
         <div>
-          <span>**bold**</span>
+          <span>**Hare** </span>
+        </div>
+        <div>
+          <span>**Krishna**</span>
         </div>
       </Md>,
     );
     const md = screen.getByTestId(testId);
-    expect(md.querySelector("span")?.textContent).toBe("bold");
+    expect(md?.textContent).toBe("HareKrishna");
   });
 
   test("supports remarkPlugins and rehypePlugins", async ({ expect }) => {

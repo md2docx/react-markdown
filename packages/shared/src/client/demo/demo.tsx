@@ -15,26 +15,27 @@ export function Demo() {
   const astRef = useRef<AstArrayElement[]>(undefined);
   return (
     <div className={styles.demo}>
-      {astRef.current?.[0].mdast && (
-        <button
-          onClick={async () => {
-            if (!astRef.current?.[0].mdast) return;
-            const docxBlob = (await toDocx(astRef.current[0].mdast)) as Blob;
-            const url = URL.createObjectURL(docxBlob);
-            const a = document.createElement("a");
-            a.href = url;
-            a.download = "sample.docx";
-            a.click();
-            URL.revokeObjectURL(url);
-          }}>
-          Download Docx
-        </button>
-      )}
+      <button
+        onClick={async () => {
+          if (!astRef.current?.[0].mdast) return;
+          const docxBlob = (await toDocx(astRef.current[0].mdast)) as Blob;
+          const url = URL.createObjectURL(docxBlob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = "sample.docx";
+          a.click();
+          URL.revokeObjectURL(url);
+        }}>
+        Download Docx
+      </button>
       <Md
         remarkPlugins={[remarkGfm, remarkFrontmatter, remarkMath]}
         astRef={astRef}
-        style={{ textAlign: "start", padding: "20px" }}>
-        {md}
+        style={{ textAlign: "start", padding: "20px", maxWidth: "100%" }}>
+        <section>{md}</section>
+        <footer>
+          Crafted with ❤️ by _[Mayank Kumar Chaudhari](https://mayank-chaudhari.vercel.app)_
+        </footer>
       </Md>
     </div>
   );
