@@ -123,7 +123,8 @@ Unlike most markdown renderers, `@m2d/react-markdown` supports **arbitrary JSX a
 ## 🎨 Component Overrides
 
 ```tsx
-import { Md, Unwrap, Omit } from "@m2d/react-markdown";
+import { Md } from "@m2d/react-markdown";
+import { Unwrap, Omit } from "@m2d/react-markdown/server";
 
 <Md
   components={{
@@ -171,6 +172,33 @@ Useful for:
 
 ---
 
+## 📊 Performance
+
+> **TL;DR:** `@m2d/react-markdown` performs competitively with `react-markdown`, especially on medium and large documents.
+>
+> 👉 [See full benchmarks →](./benchmark.md)
+
+Benchmarks include:
+
+- Multiple markdown fixture types (short, long, complex, deeply nested)
+- Plugin configurations like `remark-gfm`, `remark-math`, `rehype-raw`
+- Visual comparisons using interactive Mermaid `xychart-beta` charts
+- Ops/sec, ±%, and future memory profiling
+
+---
+
+## 💬 Upcoming Changes – Seeking Feedback
+
+We're proposing a **major change** to the internal `astRef` structure to better support MDX-style custom components and rendering flexibility:
+
+👉 [Join the discussion →](https://github.com/md2docx/react-markdown/discussions/3)
+
+Key goals:
+
+- Allow `<Md>` to embed child components like JSX/MDX
+- Simplify recursive rendering model
+- Improve performance and reduce abstraction overhead
+
 ## 🧭 Roadmap
 
 - [ ] 🔄 Merge JSX + `<Md>` segments into unified AST
@@ -184,6 +212,19 @@ Useful for:
 - [`mdast2docx`](https://github.com/md2docx/mdast2docx) – Convert MDAST → `.docx`
 - [`unified`](https://unifiedjs.com/) – Syntax tree ecosystem
 - [`react-markdown`](https://github.com/remarkjs/react-markdown) – Popular alternative (less customizable)
+
+---
+
+## 🙏 Acknowledgements
+
+We are deeply grateful to the open-source community whose work made this project possible.
+
+- 🌱 **[react-markdown](https://github.com/remarkjs/react-markdown)** – For pioneering a React-based Markdown renderer. This library builds on its ideas while extending flexibility and SSR-readiness.
+- 🛠 **[unified](https://github.com/unifiedjs/unified)** – The brilliant engine powering our markdown-to-AST transformations.
+- ✨ **[remark](https://github.com/remarkjs/remark)** and **[rehype](https://github.com/rehypejs/rehype)** – For their modular ecosystems that make parsing and rendering delightful.
+- 🧾 **[mdast2docx](https://github.com/md2docx/mdast2docx)** – Our sister project that inspired the MDAST-first architecture of this library.
+
+> 💖 To the maintainers, contributors, and communities behind these projects — thank you for your generosity, vision, and dedication to making the web better for everyone.
 
 ---
 
