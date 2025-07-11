@@ -2,6 +2,18 @@ import fs from "fs";
 import path from "path";
 import { BenchResults } from "./perf.bench";
 import benchMarkResults from "../../benchmark.json";
+import os from "os";
+import process from "process";
+
+const envInfo = {
+  platform: os.platform(), // 'win32', 'linux', 'darwin'
+  arch: os.arch(), // 'x64'
+  cpu: os.cpus()[0].model,
+  cores: os.cpus().length,
+  node: process.version,
+  memory: `${(os.totalmem() / 1024 ** 3).toFixed(2)} GB`,
+  "Benchmark time": new Date().toString(),
+};
 
 export function writeBenchmarkMarkdown(
   results: BenchResults = benchMarkResults,
@@ -14,6 +26,14 @@ export function writeBenchmarkMarkdown(
 
   const md: string[] = [];
   md.push(`# 📊 Markdown Render Benchmark`);
+
+  md.push(`\n<details><summary>🧠 System Info</summary>\n`);
+
+  Object.entries(envInfo).forEach(([param, val]) => {
+    md.push(`- **${param}:** ${val}`);
+  });
+
+  md.push("</details>");
 
   Object.entries(results).forEach(([pluginDescription, fileResults]) => {
     md.push(`\n## Benchmarks with ${pluginDescription} plugins.\n`);

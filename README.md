@@ -172,6 +172,33 @@ Useful for:
 
 ---
 
+## 📊 Performance
+
+> **TL;DR:** `@m2d/react-markdown` performs competitively with `react-markdown`, especially on medium and large documents.
+>
+> 👉 [See full benchmarks →](./benchmark.md)
+
+Benchmarks include:
+
+- Multiple markdown fixture types (short, long, complex, deeply nested)
+- Plugin configurations like `remark-gfm`, `remark-math`, `rehype-raw`
+- Visual comparisons using interactive Mermaid `xychart-beta` charts
+- Ops/sec, ±%, and future memory profiling
+
+---
+
+## 💬 Upcoming Changes – Seeking Feedback
+
+We're proposing a **major change** to the internal `astRef` structure to better support MDX-style custom components and rendering flexibility:
+
+👉 [Join the discussion →](https://github.com/md2docx/react-markdown/discussions/3)
+
+Key goals:
+
+- Allow `<Md>` to embed child components like JSX/MDX
+- Simplify recursive rendering model
+- Improve performance and reduce abstraction overhead
+
 ## 🧭 Roadmap
 
 - [ ] 🔄 Merge JSX + `<Md>` segments into unified AST
