@@ -1,11 +1,6 @@
 # 📊 Markdown Render Benchmark
 
-<style>
-.mermaid .tick > text {
-    transform: rotate(-45deg);
-    text-anchor: end;
-}
-</style>
+<img src="data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%'%3E%3CforeignObject width='100%' height='100%'%3E%3Cdiv xmlns='http://www.w3.org/1999/xhtml'%3E%3Clink rel='stylesheet' href='style.css'%3E%3C/div%3E%3C/foreignObject%3E%3C/svg%3E" alt="CSS Stylesheet">
 
 <details><summary>🧠 System Info</summary>
 
