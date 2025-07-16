@@ -1,28 +1,36 @@
 import fs from "fs";
 import path from "path";
 import { BenchResults } from "./perf.bench";
-import benchMarkResults from "../../benchmark.json";
-import os from "os";
-import process from "process";
+// import benchMarkResults from "../../benchmark.json";
 
-const envInfo = {
-  platform: os.platform(), // 'win32', 'linux', 'darwin'
-  arch: os.arch(), // 'x64'
-  cpu: os.cpus()[0].model,
-  cores: os.cpus().length,
-  node: process.version,
-  memory: `${(os.totalmem() / 1024 ** 3).toFixed(2)} GB`,
-  "Benchmark time": new Date().toString(),
-};
+interface Results {
+  results: BenchResults;
+  envInfo: {
+    platform: NodeJS.Platform;
+    arch: string;
+    cpu: string;
+    cores: number;
+    node: string;
+    memory: string;
+    "Benchmark time": string;
+  };
+}
 
-export function writeBenchmarkMarkdown(
-  results: BenchResults = benchMarkResults,
-  outPath = "benchmark.md",
-) {
+export function writeBenchmarkMarkdown({ results, envInfo }: Results, outPath = "benchmark.md") {
   fs.writeFileSync(
     path.resolve("..", outPath.slice(0, -2) + "json"),
     JSON.stringify(results, null, 2),
   );
+
+  const logsDir = path.resolve("..", "benchmark-logs");
+  const logsOutPath =
+    outPath.slice(0, -3) +
+    "_" +
+    new Date(envInfo["Benchmark time"]).toISOString().replace(/:/g, "_");
+
+  if (!fs.existsSync(logsDir)) fs.mkdirSync(logsDir);
+
+  fs.writeFileSync(path.resolve(logsDir, logsOutPath + ".json"), JSON.stringify(results, null, 2));
 
   const md: string[] = [];
   md.push(`# 📊 Markdown Render Benchmark`);
@@ -38,7 +46,15 @@ export function writeBenchmarkMarkdown(
   Object.entries(results).forEach(([pluginDescription, fileResults]) => {
     md.push(`\n## Benchmarks with ${pluginDescription} plugins.\n`);
 
-    const chart1Files = ["short.md", "medium.md", "long.md", "All files"];
+    const chart1Files = [
+      "short.md",
+      "simple.md",
+      "formatting.md",
+      "medium.md",
+      "tutorial.md",
+      "long.md",
+      "All files",
+    ];
     const res1: number[] = [];
     const res2: number[] = [];
     const res3: number[] = [];
@@ -89,4 +105,5 @@ xychart-beta
   });
 
   fs.writeFileSync(path.resolve("..", outPath), md.join("\n") + "\n", "utf8");
+  fs.writeFileSync(path.resolve(logsDir, logsOutPath + ".md"), md.join("\n") + "\n", "utf8");
 }
