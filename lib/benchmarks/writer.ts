@@ -72,7 +72,7 @@ export function writeBenchmarkMarkdown(
     md.push(`~~~mermaid
 xychart-beta
     title "Render Speed Comparison (Ops/sec)"
-    x-axis ["${chart1Files.join('", "')}"]
+    x-axis ["${chart1Files.map(f => f.split("").join("\\")).join('", "')}"]
     y-axis "Ops/sec (higher is better)"
     bar [${res1.join(", ")}]  %% react-markdown
     bar [${res2.join(", ")}]  %% @m2d/react-markdown
