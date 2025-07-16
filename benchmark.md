@@ -16,7 +16,7 @@
 ~~~mermaid
 xychart-beta
     title "Render Speed Comparison (Ops/sec)"
-    x-axis ["A\l\l\ \f\i\l\e\s", "l\o\n\g\.\m\d", "s\a\m\p\l\e\.\m\d", "m\e\d\i\u\m\.\m\d", "t\u\t\o\r\i\a\l\.\m\d", "s\i\t\e\-\c\o\n\t\e\n\t\.\m\d", "d\e\e\p\l\y\-\n\e\s\t\e\d\-\l\i\s\t\s\.\m\d", "f\o\r\m\a\t\t\i\n\g\.\m\d", "g\f\m\-\c\o\m\p\l\e\x\i\t\y\.\m\d", "s\i\m\p\l\e\.\m\d", "s\h\o\r\t\.\m\d"]
+    x-axis ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"]
     y-axis "Ops/sec (higher is better)"
     bar [10.19241185378493, 15.237887498464271, 39.713028229613265, 265.37261980873586, 454.19301624869837, 616.5809492411433, 724.1123046146485, 758.424039014117, 866.0574034095946, 1177.7567013493037, 1879.962645100728]  %% react-markdown
     bar [10.133560407898365, 18.23614021035891, 40.783066566324685, 288.63007354074966, 453.09569784380045, 708.6733907578804, 665.0317518751667, 733.2498839570549, 936.7250406151065, 1020.0592956469054, 1764.4388808432216]  %% @m2d/react-markdown
@@ -25,11 +25,24 @@ xychart-beta
 ~~~mermaid
 xychart-beta
     title "Render Speed Comparison (Ops/sec)"
-    x-axis ["All files", "long.md", "sample.md", "medium.md", "tutorial.md", "site-content.md", "deeply-nested-lists.md", "formatting.md", "gfm-complexity.md", "simple.md", "short.md"]
+    x-axis ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"]
     y-axis "Δ from react-markdown (%)"
     line [0.5807578335517227, -16.441268148352485, -2.6237319230794918, -8.057876106500123, 0.24218248156401764, -12.995047185029781, 8.883869465314156, 3.433230009012398, -7.544117445510754, 15.459631256278012, 6.547337258987279]  %% difference percent
     line [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]  %% Zero line
 ~~~
+
+> **Labels:**
+> 1: ***All files***;
+> 2: ***long.md***;
+> 3: ***sample.md***;
+> 4: ***medium.md***;
+> 5: ***tutorial.md***;
+> 6: ***site-content.md***;
+> 7: ***deeply-nested-lists.md***;
+> 8: ***formatting.md***;
+> 9: ***gfm-complexity.md***;
+> 10: ***simple.md***;
+> 11: ***short.md***;
 
 <details><summary>Detailed Tables</summary>
 
@@ -117,7 +130,7 @@ xychart-beta
 ~~~mermaid
 xychart-beta
     title "Render Speed Comparison (Ops/sec)"
-    x-axis ["A\l\l\ \f\i\l\e\s", "l\o\n\g\.\m\d", "s\a\m\p\l\e\.\m\d", "m\e\d\i\u\m\.\m\d", "t\u\t\o\r\i\a\l\.\m\d", "g\f\m\-\c\o\m\p\l\e\x\i\t\y\.\m\d", "d\e\e\p\l\y\-\n\e\s\t\e\d\-\l\i\s\t\s\.\m\d", "f\o\r\m\a\t\t\i\n\g\.\m\d", "s\i\t\e\-\c\o\n\t\e\n\t\.\m\d", "s\i\m\p\l\e\.\m\d", "s\h\o\r\t\.\m\d"]
+    x-axis ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"]
     y-axis "Ops/sec (higher is better)"
     bar [9.19456457767856, 14.578606252619634, 29.142933933555984, 158.88284646816587, 225.35154997154035, 421.93735395253873, 447.6945290689255, 477.49125840194716, 524.1407411477045, 650.0743277927277, 1089.0568990174372]  %% react-markdown
     bar [8.96118917853905, 14.860516873811127, 28.73244101557091, 195.387272610289, 215.75654174032388, 485.32158072860494, 480.0805799394233, 455.19895584073123, 525.698868676371, 603.6594901074635, 951.0962117337364]  %% @m2d/react-markdown
@@ -126,11 +139,24 @@ xychart-beta
 ~~~mermaid
 xychart-beta
     title "Render Speed Comparison (Ops/sec)"
-    x-axis ["All files", "long.md", "sample.md", "medium.md", "tutorial.md", "gfm-complexity.md", "deeply-nested-lists.md", "formatting.md", "site-content.md", "simple.md", "short.md"]
+    x-axis ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"]
     y-axis "Δ from react-markdown (%)"
     line [2.6042905075413074, -1.8970445212999782, 1.4286740126347661, -18.68311362067747, 4.447145914474586, -13.060253096701071, -6.745961453925981, 4.897265750542659, -0.2963916457704525, 7.688910461260434, 14.505439679148207]  %% difference percent
     line [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]  %% Zero line
 ~~~
+
+> **Labels:**
+> 1: ***All files***;
+> 2: ***long.md***;
+> 3: ***sample.md***;
+> 4: ***medium.md***;
+> 5: ***tutorial.md***;
+> 6: ***gfm-complexity.md***;
+> 7: ***deeply-nested-lists.md***;
+> 8: ***formatting.md***;
+> 9: ***site-content.md***;
+> 10: ***simple.md***;
+> 11: ***short.md***;
 
 <details><summary>Detailed Tables</summary>
 
@@ -218,7 +244,7 @@ xychart-beta
 ~~~mermaid
 xychart-beta
     title "Render Speed Comparison (Ops/sec)"
-    x-axis ["A\l\l\ \f\i\l\e\s", "l\o\n\g\.\m\d", "s\a\m\p\l\e\.\m\d", "t\u\t\o\r\i\a\l\.\m\d", "m\e\d\i\u\m\.\m\d", "d\e\e\p\l\y\-\n\e\s\t\e\d\-\l\i\s\t\s\.\m\d", "g\f\m\-\c\o\m\p\l\e\x\i\t\y\.\m\d", "f\o\r\m\a\t\t\i\n\g\.\m\d", "s\i\t\e\-\c\o\n\t\e\n\t\.\m\d", "s\i\m\p\l\e\.\m\d", "s\h\o\r\t\.\m\d"]
+    x-axis ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"]
     y-axis "Ops/sec (higher is better)"
     bar [8.02421290194737, 15.894618270681677, 25.173484977461364, 121.15251191659108, 186.6724887049371, 199.0681477924004, 209.0951917041034, 236.14592059014348, 468.8030153114202, 586.8802132888387, 1144.86793763487]  %% react-markdown
     bar [7.486454817065299, 16.15020671678501, 26.10507804986317, 116.25241644487154, 191.00768695360517, 207.25573796737376, 205.57262698376056, 235.46064957103835, 338.2600767452376, 649.8923806337748, 1073.6895157183899]  %% @m2d/react-markdown
@@ -227,11 +253,24 @@ xychart-beta
 ~~~mermaid
 xychart-beta
     title "Render Speed Comparison (Ops/sec)"
-    x-axis ["All files", "long.md", "sample.md", "tutorial.md", "medium.md", "deeply-nested-lists.md", "gfm-complexity.md", "formatting.md", "site-content.md", "simple.md", "short.md"]
+    x-axis ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"]
     y-axis "Δ from react-markdown (%)"
     line [7.183080617226957, -1.5825707409534187, -3.5686277996272433, 4.215048273033731, -2.269645959181246, -3.9504769591770037, 1.713537824576767, 0.29103420055688933, 38.592475890822236, -9.695784905723412, 6.629330069303667]  %% difference percent
     line [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]  %% Zero line
 ~~~
+
+> **Labels:**
+> 1: ***All files***;
+> 2: ***long.md***;
+> 3: ***sample.md***;
+> 4: ***tutorial.md***;
+> 5: ***medium.md***;
+> 6: ***deeply-nested-lists.md***;
+> 7: ***gfm-complexity.md***;
+> 8: ***formatting.md***;
+> 9: ***site-content.md***;
+> 10: ***simple.md***;
+> 11: ***short.md***;
 
 <details><summary>Detailed Tables</summary>
 

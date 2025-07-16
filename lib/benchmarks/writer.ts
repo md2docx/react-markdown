@@ -72,7 +72,7 @@ export function writeBenchmarkMarkdown(
     md.push(`~~~mermaid
 xychart-beta
     title "Render Speed Comparison (Ops/sec)"
-    x-axis ["${chart1Files.map(f => f.split("").join("\\")).join('", "')}"]
+    x-axis ["${chart1Files.map((_, i) => i + 1).join('", "')}"]
     y-axis "Ops/sec (higher is better)"
     bar [${res1.join(", ")}]  %% react-markdown
     bar [${res2.join(", ")}]  %% @m2d/react-markdown
@@ -81,11 +81,15 @@ xychart-beta
     md.push(`~~~mermaid
 xychart-beta
     title "Render Speed Comparison (Ops/sec)"
-    x-axis ["${chart1Files.join('", "')}"]
+    x-axis ["${chart1Files.map((_, i) => i + 1).join('", "')}"]
     y-axis "Δ from react-markdown (%)"
     line [${res3.join(", ")}]  %% difference percent
     line [${res3.map(() => 0).join(", ")}]  %% Zero line
 ~~~\n`);
+
+    md.push(
+      `> **Labels:**\n> ${chart1Files.map((name, i) => `${i + 1}: ***${name}***;`).join("\n> ")}\n`,
+    );
 
     md.push(`<details><summary>Detailed Tables</summary>`);
 
