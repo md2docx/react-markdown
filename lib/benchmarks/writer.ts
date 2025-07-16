@@ -1,12 +1,12 @@
 import fs from "fs";
 import path from "path";
 import { BenchResults } from "./perf.bench";
-// import benchMarkResults from "../../benchmark.json";
+import benchMarkResults from "../../benchmark.json";
 
 interface Results {
   results: BenchResults;
   envInfo: {
-    platform: NodeJS.Platform;
+    platform: string;
     arch: string;
     cpu: string;
     cores: number;
@@ -16,10 +16,14 @@ interface Results {
   };
 }
 
-export function writeBenchmarkMarkdown({ results, envInfo }: Results, outPath = "benchmark.md") {
+export function writeBenchmarkMarkdown(
+  benchResults: Results = benchMarkResults,
+  outPath = "benchmark.md",
+) {
+  const { results, envInfo } = benchResults;
   fs.writeFileSync(
     path.resolve("..", outPath.slice(0, -2) + "json"),
-    JSON.stringify(results, null, 2),
+    JSON.stringify(benchResults, null, 2),
   );
 
   const logsDir = path.resolve("..", "benchmark-logs");
@@ -30,7 +34,10 @@ export function writeBenchmarkMarkdown({ results, envInfo }: Results, outPath = 
 
   if (!fs.existsSync(logsDir)) fs.mkdirSync(logsDir);
 
-  fs.writeFileSync(path.resolve(logsDir, logsOutPath + ".json"), JSON.stringify(results, null, 2));
+  fs.writeFileSync(
+    path.resolve(logsDir, logsOutPath + ".json"),
+    JSON.stringify(benchResults, null, 2),
+  );
 
   const md: string[] = [];
   md.push(`# 📊 Markdown Render Benchmark`);
@@ -46,15 +53,11 @@ export function writeBenchmarkMarkdown({ results, envInfo }: Results, outPath = 
   Object.entries(results).forEach(([pluginDescription, fileResults]) => {
     md.push(`\n## Benchmarks with ${pluginDescription} plugins.\n`);
 
-    const chart1Files = [
-      "short.md",
-      "simple.md",
-      "formatting.md",
-      "medium.md",
-      "tutorial.md",
-      "long.md",
-      "All files",
-    ];
+    const chart1Files = Object.keys(fileResults).sort(
+      (f1, f2) =>
+        fileResults[f1].reduce((acc, curr) => acc + curr.ops, 0) -
+        fileResults[f2].reduce((acc, curr) => acc + curr.ops, 0),
+    );
     const res1: number[] = [];
     const res2: number[] = [];
     const res3: number[] = [];
@@ -81,6 +84,7 @@ xychart-beta
     x-axis ["${chart1Files.join('", "')}"]
     y-axis "Δ from react-markdown (%)"
     line [${res3.join(", ")}]  %% difference percent
+    line [${res3.map(() => 0).join(", ")}]  %% Zero line
 ~~~\n`);
 
     md.push(`<details><summary>Detailed Tables</summary>`);

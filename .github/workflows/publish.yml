@@ -36,7 +36,7 @@ jobs:
         run: pnpm test
         working-directory: ./lib
       - name: Copy Readme file
-        run: cp ./README.md ./lib # will be uncommented while rebranding
+        run: cp ./README.md ./lib
       - name: Apply changesets, publish and create release, branches and tags
         run: node ./scripts/publish.js
         env:
