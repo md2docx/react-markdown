@@ -62,11 +62,11 @@ export function writeBenchmarkMarkdown(
     const res2: number[] = [];
     const res3: number[] = [];
     chart1Files.forEach(testName => {
-      const r1 = fileResults[testName].find(row => row.name === "react-markdown")?.ops ?? 0;
+      const baseline = fileResults[testName].find(row => row.name === "react-markdown")?.ops ?? 0;
       const r2 = fileResults[testName].find(row => row.name === "@m2d/react-markdown")?.ops ?? 0;
-      res1.push(r1);
+      res1.push(baseline);
       res2.push(r2);
-      res3.push(((r1 - r2) / r2) * 100);
+      res3.push(((r2 - baseline) / baseline) * 100);
     });
 
     md.push(`~~~mermaid
