@@ -5,6 +5,7 @@
  */
 
 // server component exports
+export * from "./mdx";
 export * from "./omit";
 export * from "./unwrap";
 export * from "./md";
