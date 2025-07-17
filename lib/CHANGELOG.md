@@ -1,5 +1,11 @@
 # @m2d/react-markdown
 
+## 1.0.0
+
+### Major Changes
+
+- 344c4d2: Default Md now accepts only string children. For Mdx we are exposing another component from server/mdx.
+
 ## 0.3.0
 
 ### Minor Changes
