@@ -2,26 +2,41 @@ import fs from "fs";
 import path from "path";
 import { BenchResults } from "./perf.bench";
 import benchMarkResults from "../../benchmark.json";
-import os from "os";
-import process from "process";
 
-const envInfo = {
-  platform: os.platform(), // 'win32', 'linux', 'darwin'
-  arch: os.arch(), // 'x64'
-  cpu: os.cpus()[0].model,
-  cores: os.cpus().length,
-  node: process.version,
-  memory: `${(os.totalmem() / 1024 ** 3).toFixed(2)} GB`,
-  "Benchmark time": new Date().toString(),
-};
+interface Results {
+  results: BenchResults;
+  envInfo: {
+    platform: string;
+    arch: string;
+    cpu: string;
+    cores: number;
+    node: string;
+    memory: string;
+    "Benchmark time": string;
+  };
+}
 
 export function writeBenchmarkMarkdown(
-  results: BenchResults = benchMarkResults,
+  benchResults: Results = benchMarkResults,
   outPath = "benchmark.md",
 ) {
+  const { results, envInfo } = benchResults;
   fs.writeFileSync(
     path.resolve("..", outPath.slice(0, -2) + "json"),
-    JSON.stringify(results, null, 2),
+    JSON.stringify(benchResults, null, 2),
+  );
+
+  const logsDir = path.resolve("..", "benchmark-logs");
+  const logsOutPath =
+    outPath.slice(0, -3) +
+    "_" +
+    new Date(envInfo["Benchmark time"]).toISOString().replace(/:/g, "_");
+
+  if (!fs.existsSync(logsDir)) fs.mkdirSync(logsDir);
+
+  fs.writeFileSync(
+    path.resolve(logsDir, logsOutPath + ".json"),
+    JSON.stringify(benchResults, null, 2),
   );
 
   const md: string[] = [];
@@ -38,22 +53,26 @@ export function writeBenchmarkMarkdown(
   Object.entries(results).forEach(([pluginDescription, fileResults]) => {
     md.push(`\n## Benchmarks with ${pluginDescription} plugins.\n`);
 
-    const chart1Files = ["short.md", "medium.md", "long.md", "All files"];
+    const chart1Files = Object.keys(fileResults).sort(
+      (f1, f2) =>
+        fileResults[f1].reduce((acc, curr) => acc + curr.ops, 0) -
+        fileResults[f2].reduce((acc, curr) => acc + curr.ops, 0),
+    );
     const res1: number[] = [];
     const res2: number[] = [];
     const res3: number[] = [];
     chart1Files.forEach(testName => {
-      const r1 = fileResults[testName].find(row => row.name === "react-markdown")?.ops ?? 0;
+      const baseline = fileResults[testName].find(row => row.name === "react-markdown")?.ops ?? 0;
       const r2 = fileResults[testName].find(row => row.name === "@m2d/react-markdown")?.ops ?? 0;
-      res1.push(r1);
+      res1.push(baseline);
       res2.push(r2);
-      res3.push(((r1 - r2) / r2) * 100);
+      res3.push(((r2 - baseline) / baseline) * 100);
     });
 
     md.push(`~~~mermaid
 xychart-beta
     title "Render Speed Comparison (Ops/sec)"
-    x-axis ["${chart1Files.join('", "')}"]
+    x-axis ["${chart1Files.map((_, i) => i + 1).join('", "')}"]
     y-axis "Ops/sec (higher is better)"
     bar [${res1.join(", ")}]  %% react-markdown
     bar [${res2.join(", ")}]  %% @m2d/react-markdown
@@ -62,10 +81,15 @@ xychart-beta
     md.push(`~~~mermaid
 xychart-beta
     title "Render Speed Comparison (Ops/sec)"
-    x-axis ["${chart1Files.join('", "')}"]
+    x-axis ["${chart1Files.map((_, i) => i + 1).join('", "')}"]
     y-axis "Δ from react-markdown (%)"
     line [${res3.join(", ")}]  %% difference percent
+    line [${res3.map(() => 0).join(", ")}]  %% Zero line
 ~~~\n`);
+
+    md.push(
+      `> **Labels:**\n> ${chart1Files.map((name, i) => `${i + 1}: ***${name}***;`).join("\n> ")}\n`,
+    );
 
     md.push(`<details><summary>Detailed Tables</summary>`);
 
@@ -89,4 +113,5 @@ xychart-beta
   });
 
   fs.writeFileSync(path.resolve("..", outPath), md.join("\n") + "\n", "utf8");
+  fs.writeFileSync(path.resolve(logsDir, logsOutPath + ".md"), md.join("\n") + "\n", "utf8");
 }

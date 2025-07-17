@@ -44,7 +44,7 @@ export type AstRef = { current?: AstArrayElement[] };
 /**
  * Props accepted by the main `<Md />` component for rendering Markdown.
  */
-export interface MdProps extends HTMLProps<HTMLDivElement> {
+export interface MdxProps extends HTMLProps<HTMLDivElement> {
   /**
    * Optional wrapper element. Defaults to `<div>` if additional props are passed, otherwise uses `Fragment`.
    */
@@ -81,11 +81,8 @@ export interface MdProps extends HTMLProps<HTMLDivElement> {
   skipHtml?: boolean;
 }
 
-interface MarkdownProps extends MdProps {
-  /**
-   * Raw markdown string to be parsed and rendered.
-   */
-  children: string;
+export interface MdProps extends MdxProps {
+  children?: string;
 }
 
 /**
@@ -100,7 +97,7 @@ export const Markdown = ({
   astRef,
   components,
   skipHtml,
-}: MarkdownProps) => {
+}: MdProps) => {
   const processor = unified()
     .use(remarkParse)
     .use(remarkPlugins)
@@ -110,7 +107,7 @@ export const Markdown = ({
     })
     .use(rehypePlugins);
 
-  const mdast = processor.parse(children);
+  const mdast = processor.parse(children ?? "");
   const hast = processor.runSync(mdast);
   if (astRef) {
     if (!astRef.current) astRef.current = [];

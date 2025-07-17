@@ -1,0 +1,36 @@
+name: Run Benchmarks.
+
+# publish only when package json has changed - assuming version upgrade
+on:
+  workflow_dispatch:
+
+jobs:
+  publish:
+    if: github.event.repository.owner.login == 'md2docx'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: https://registry.npmjs.org
+      - name: Setup Git
+        run: |
+          git config --global user.name "mayank1513"
+          git config --global user.email "mayank.srmu@gmail.com"
+      - run: npm i -g pnpm && pnpm i
+        name: Install dependencies
+      - name: clean up working directory
+        run: git status && git clean -f -d && git status
+
+      - name: Run Benchmarks
+        run: cd lib && pnpm build && pnpm benchmark
+      - name: Save benchmarks back to repo
+        run: git add . && git commit -m "Update benchmarks" && git push
