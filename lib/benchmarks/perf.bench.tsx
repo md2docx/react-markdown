@@ -11,6 +11,18 @@ import rehypeRaw from "rehype-raw";
 import { files, markdowns } from "../fixtures";
 import { writeBenchmarkMarkdown } from "./writer";
 import { PluggableList } from "unified";
+import os from "os";
+import process from "process";
+
+const envInfo = {
+  platform: os.platform(), // 'win32', 'linux', 'darwin'
+  arch: os.arch(), // 'x64'
+  cpu: os.cpus()[0].model,
+  cores: os.cpus().length,
+  node: process.version,
+  memory: `${(os.totalmem() / 1024 ** 3).toFixed(2)} GB`,
+  "Benchmark time": new Date().toString(),
+};
 
 const log = console.log;
 
@@ -119,19 +131,6 @@ Object.entries(pluginLists).forEach(([pluginDescription, plugins]) => {
       },
       { minSamples: 100 },
     )
-    .add(
-      "@m2d/react-markdown as nested jsx",
-      () => {
-        render(
-          <Md {...plugins}>
-            {markdowns.map((markdown, i) => (
-              <section key={i}>{markdown}</section>
-            ))}
-          </Md>,
-        );
-      },
-      { minSamples: 100 },
-    )
     .on("cycle", (event: any) => {
       log(String(event.target));
     })
@@ -159,6 +158,6 @@ Object.entries(pluginLists).forEach(([pluginDescription, plugins]) => {
     .run({ async: false });
 });
 
-writeBenchmarkMarkdown(benchmarkResults);
+writeBenchmarkMarkdown({ results: benchmarkResults, envInfo });
 
 log(chalk.green(`\n✅ Written to benchmark.md`));

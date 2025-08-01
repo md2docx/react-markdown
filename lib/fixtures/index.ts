@@ -8,12 +8,12 @@ export const files = [
   "short.md",
   "medium.md",
   "long.md",
-  "short-simple.md",
-  "medium-formatting.md",
-  "long-tutorial.md",
+  // "simple.md",
+  // "formatting.md",
+  // "tutorial.md",
   "gfm-complexity.md",
   "deeply-nested-lists.md",
-  "site-content.md",
+  // "site-content.md",
 ];
 
 export const markdowns = files.map(file => fs.readFileSync(path.join(fixturesDir, file), "utf8"));

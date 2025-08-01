@@ -111,12 +111,15 @@ export default function Page() {
 Unlike most markdown renderers, `@m2d/react-markdown` supports **arbitrary JSX as children**:
 
 ```tsx
-<Md>
+import { Mdx } from "@m2d/react-markdown/server";
+// ...
+<Mdx>
   <article>{"# Markdown Heading\n\nSome **rich** content."}</article>
-</Md>
+</Mdx>;
 ```
 
 > `astRef.current` is an array — one per Markdown string — each with `{ mdast, hast }`.
+> The default `<Md>` export accepts only string children for better optimization.
 
 ---
 
