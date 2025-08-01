@@ -17,14 +17,14 @@
     "format"
   ],
   "devDependencies": {
-    "@changesets/cli": "^2.29.4",
+    "@changesets/cli": "^2.29.5",
     "@repo/typescript-config": "workspace:*",
-    "@types/node": "^22.15.19",
+    "@types/node": "^24.1.0",
     "plop": "^4.0.1",
-    "prettier": "^3.5.3",
-    "turbo": "^2.5.3"
+    "prettier": "^3.6.2",
+    "turbo": "^2.5.5"
   },
-  "packageManager": "pnpm@10.13.1",
+  "packageManager": "pnpm@10.14.0",
   "engines": {
     "node": ">=18"
   },

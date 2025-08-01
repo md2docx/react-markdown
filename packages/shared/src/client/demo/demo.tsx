@@ -1,7 +1,7 @@
 "use client";
 
 import styles from "./demo.module.scss";
-import { Md } from "@m2d/react-markdown";
+import { Mdx } from "@m2d/react-markdown/server";
 import { AstArrayElement } from "@m2d/react-markdown/utils";
 import md from "../../../../../sample.md?raw";
 import remarkGfm from "remark-gfm";
@@ -28,7 +28,7 @@ export function Demo() {
         }}>
         Download Docx
       </button>
-      <Md
+      <Mdx
         remarkPlugins={[remarkGfm, remarkFrontmatter, remarkMath]}
         astRef={astRef}
         style={{ textAlign: "start", padding: "20px", maxWidth: "100%" }}>
@@ -36,7 +36,7 @@ export function Demo() {
         <footer>
           Crafted with ❤️ by _[Mayank Kumar Chaudhari](https://mayank-chaudhari.vercel.app)_
         </footer>
-      </Md>
+      </Mdx>
     </div>
   );
 }
