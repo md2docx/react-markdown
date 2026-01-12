@@ -22,7 +22,7 @@
     "@types/node": "^24.1.0",
     "plop": "^4.0.1",
     "prettier": "^3.6.2",
-    "turbo": "^2.7.3"
+    "turbo": "^2.7.4"
   },
   "packageManager": "pnpm@10.28.0",
   "engines": {
